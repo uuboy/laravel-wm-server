@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Transformers\UserTransformer;
 use Auth;
 use App\Http\Requests\Api\WeappAuthorizationRequest;
 
@@ -27,49 +28,32 @@ class AuthorizationsController extends Controller
 
         $attributes['weixin_session_key'] = $data['session_key'];
 
-        // 未找到对应用户则需要提交用户名密码进行用户绑定
+        // 未找到对应用户则创建用户
         if (!$user) {
-            // 如果未提交用户名密码，403 错误提示
-            if (!$request->username) {
-                return $this->response->errorForbidden('用户不存在');
-            }
-
-            $username = $request->username;
-
-            // 用户名可以是邮箱或电话
-            filter_var($username, FILTER_VALIDATE_EMAIL) ?
-                $credentials['email'] = $username :
-                $credentials['phone'] = $username;
-
-            $credentials['password'] = $request->password;
-
-            // 验证用户名和密码是否正确
-            if (!Auth::guard('api')->once($credentials)) {
-                return $this->response->errorUnauthorized('用户名或密码错误');
-            }
-
-            // 获取对应的用户
-            $user = Auth::guard('api')->getUser();
-            $attributes['weapp_openid'] = $data['openid'];
+            $user = User::create([
+                'name' => $request->name,
+                'avatar' => $request->avatar,
+                'email' => '',
+                'password' => bcrypt(str_random(8)),
+                'weapp_openid' => $data['openid'],
+                'weixin_session_key' => $data['session_key']
+             ]);
+        } else{
+            // 更新用户数据
+            $user->update($attributes);
         }
 
-        // 更新用户数据
-        $user->update($attributes);
 
-        // 为对应用户创建 JWT
-        $token = Auth::guard('api')->fromUser($user);
 
-        return $this->respondWithToken($token)->setStatusCode(201);
+        return $this->response->item($user, new UserTransformer())
+            ->setMeta([
+                'access_token' => \Auth::guard('api')->fromUser($user),
+                'token_type' => 'Bearer',
+                'expires_in' => \Auth::guard('api')->factory()->getTTL() * 60
+            ])
+            ->setStatusCode(201);
     }
 
-    protected function respondWithToken($token)
-    {
-    return $this->response->array([
-        'access_token' => $token,
-        'token_type' => 'Bearer',
-        'expires_in' => \Auth::guard('api')->factory()->getTTL() * 60
-        ]);
-    }
 
     public function update()
     {
@@ -81,6 +65,15 @@ class AuthorizationsController extends Controller
     {
         Auth::guard('api')->logout();
         return $this->response->noContent();
+    }
+
+    protected function respondWithToken($token)
+    {
+        return $this->response->array([
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'expires_in' => \Auth::guard('api')->factory()->getTTL() * 60
+        ]);
     }
 
 }
