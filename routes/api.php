@@ -17,7 +17,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1',[
     'namespace' => 'App\Http\Controllers\Api',
-    'middleware' => 'serializer:array',
+    'middleware' => ['serializer:array','bindings'],
 ], function($api) {
     $api->group([
         'middleware' => 'api.throttle',
@@ -50,6 +50,18 @@ $api->version('v1',[
             // 更新用户头像
             $api->put('user/avatar', 'UsersController@avatar')
                 ->name('api.user.avatar');
+            //创建仓库
+            $api->post('repositories', 'RepositoriesController@store')
+                ->name('api.repositories.store');
+            //修改仓库
+            $api->put('repositories/{repository}', 'RepositoriesController@update')
+                ->name('api.repositories.update');
+            //删除仓库
+            $api->delete('repositories/{repository}', 'RepositoriesController@destroy')
+                ->name('api.repositories.destroy');
+            //仓库列表
+            $api->get('repositories', 'RepositoriesController@index')
+                ->name('api.repositories.index');
         });
     });
 });
