@@ -62,6 +62,36 @@ $api->version('v1',[
             //仓库列表
             $api->get('repositories', 'RepositoriesController@index')
                 ->name('api.repositories.index');
+            //用户仓库列表
+            $api->get('users/{user}/repositories', 'RepositoriesController@userIndex')
+                ->name('api.users.repositories.index');
+
+            //创建商品
+            $api->post('repositories/{repository}/goods', 'GoodsController@store')
+                ->name('api.repositories.goods.store');
+            //删除商品
+            $api->delete('repositories/{repository}/goods/{good}', 'GoodsController@destroy')
+                ->name('api.repositories.goods.destroy');
+            //修改商品
+            $api->put('repositories/{repository}/goods/{good}', 'GoodsController@update')
+                ->name('api.repositories.goods.update');
+            //仓库商品列表
+            $api->get('repositories/{repository}/goods', 'GoodsController@repositoryIndex')
+                ->name('api.repositories.goods.index');
+
+            //创建单据
+            $api->post('goods/{good}/bills', 'BillsController@store')
+                ->name('api.goods.bills.store');
+            //删除单据
+            $api->delete('goods/{good}/bills/{bill}', 'BillsController@destroy')
+                ->name('api.goods.bills.destroy');
+            //修改单据
+            $api->put('goods/{good}/bills/{bill}', 'BillsController@update')
+                ->name('api.goods.bills.update');
+            //商品订单列表
+            $api->get('goods/{good}/bills', 'BillsController@goodIndex')
+                ->name('api.goods.bills.index');
+
         });
     });
 });

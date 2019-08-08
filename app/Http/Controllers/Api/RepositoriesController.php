@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Repository;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Transformers\RepositoryTransformer;
 use App\Http\Requests\Api\RepositoryRequest;
@@ -54,6 +55,14 @@ class RepositoriesController extends Controller
         }
 
         $repositories = $query->paginate(20);
+
+        return $this->response->paginator($repositories, new RepositoryTransformer());
+    }
+
+    public function userIndex(User $user, RepositoryRequest $request)
+    {
+        $repositories = $user->repositories()->recent()
+            ->paginate(20);
 
         return $this->response->paginator($repositories, new RepositoryTransformer());
     }

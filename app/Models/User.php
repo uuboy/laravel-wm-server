@@ -55,23 +55,21 @@ class User extends Authenticatable implements MustVerifyEmailContract, JWTSubjec
         return $this->hasMany(Parter::class);
     }
 
-    public function owners()
-    {
-
-        return $this->hasMany(Owner::class);
-    }
-
-    public function receivers()
-    {
-
-        return $this->hasMany(Receiver::class);
-
-    }
 
     public function repositories()
     {
 
         return $this->hasMany(Repository::class);
 
+    }
+
+    public function receiverBills()
+    {
+        return $this->hasMany(Bill::class,'receiver_id');
+    }
+
+    public function ownerBills()
+    {
+        return $this->hasMany(Bill::class,'owner_id');
     }
 }
