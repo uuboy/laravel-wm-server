@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Bill;
 use App\Models\Good;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Transformers\BillTransformer;
 use App\Http\Requests\Api\BillRequest;
@@ -14,9 +15,20 @@ class BillsController extends Controller
     {
         $bill->fill($request->all());
         $bill->good()->associate($good);
-        $bill->owner_id = $this->user()->id;
+        if($bill->sort == 1){
+            $bill->owner_id = $this->user()->id;
+            $good = $bill->good;
+            $good->num -= $bill->num;
+            $good->save();
+        }elseif ($bill->sort == 2) {
+            $bill->receiver_id = $this->user()->id;
+            $good = $bill->good;
+            $good->num += $bill->num;
+            $good->save();
+        }else{
+            return $this->response->errorBadRequest();
+        }
         $bill->save();
-
         return $this->response->item($bill, new BillTransformer())
             ->setStatusCode(201);
     }
@@ -28,7 +40,27 @@ class BillsController extends Controller
         if ($bill->good_id != $good->id) {
             return $this->response->errorBadRequest();
         }
+        if($bill->sort == 1){
+            $bill->good->num += $bill->num;
+            $bill->good->save();
+        }else{
+            if($bill->sort == 2){
+                $bill->good->num -= $bill->num;
+                $bill->good->save();
+            }
+        }
+
         $bill->update($request->all());
+
+        if($bill->sort == 1){
+            $bill->good->num -= $bill->num;
+            $bill->good->save();
+        }else{
+            if($bill->sort == 2){
+                $bill->good->num += $bill->num;
+                $bill->good->save();
+            }
+        }
         return $this->response->item($bill, new BillTransformer());
     }
 
@@ -37,6 +69,15 @@ class BillsController extends Controller
         // $this->authorize('destroy', $bill);
         if ($bill->good_id != $good->id) {
             return $this->response->errorBadRequest();
+        }
+        if($bill->sort == 1){
+            $bill->good->num += $bill->num;
+            $bill->good->save();
+        }else{
+            if($bill->sort == 2){
+                $bill->good->num -= $bill->num;
+                $bill->good->save();
+            }
         }
         $bill->delete();
         return $this->response->noContent();
@@ -70,5 +111,37 @@ class BillsController extends Controller
         $bills = $good->bills()->recent()->paginate(20);
 
         return $this->response->paginator($bills, new BillTransformer());
+    }
+
+    public function ownerIndex(User $user, BillRequest $request)
+    {
+        $bills = $user->ownerBills()->recent()->paginate(20);
+
+        return $this->response->paginator($bills, new BillTransformer());
+    }
+
+    public function receiverIndex(User $user, BillRequest $request)
+    {
+        $bills = $user->receiverBills()->recent()->paginate(20);
+
+        return $this->response->paginator($bills, new BillTransformer());
+    }
+
+    public function billDeal(Bill $bill)
+    {
+        if($bill->sort == 1 && is_null($bill->receiver_id) && !is_null($bill->owner_id)){
+            $bill->receiver()->associate($this->user());
+            $bill->save();
+        }else{
+
+            if($bill->sort == 2 && is_null($bill->owner_id) && !is_null($bill->receiver_id)){
+                $bill->owner()->associate($this->user());
+                $bill->save();
+            }else{
+                   return $this->response->errorBadRequest();
+                 }
+        }
+
+        return $this->response->item($bill, new BillTransformer());
     }
 }

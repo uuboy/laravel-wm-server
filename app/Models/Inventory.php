@@ -22,4 +22,14 @@ class Inventory extends Model
 
     }
 
+    public function scopeRecentUpdated($query)
+    {
+        return $query->orderBy('updated_at', 'desc');
+    }
+    public function scopeRecent($query)
+    {
+        // 按照创建时间排序
+        return $query->orderBy('created_at', 'desc');
+    }
+
 }

@@ -14,6 +14,7 @@ class GoodsController extends Controller
     {
         $good->fill($request->all());
         $good->repository()->associate($repository);
+        $good->num = 0;
         $good->save();
 
         return $this->response->item($good, new GoodTransformer())

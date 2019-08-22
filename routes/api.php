@@ -66,6 +66,8 @@ $api->version('v1',[
             $api->get('users/{user}/repositories', 'RepositoriesController@userIndex')
                 ->name('api.users.repositories.index');
 
+
+
             //创建商品
             $api->post('repositories/{repository}/goods', 'GoodsController@store')
                 ->name('api.repositories.goods.store');
@@ -91,6 +93,53 @@ $api->version('v1',[
             //商品订单列表
             $api->get('goods/{good}/bills', 'BillsController@goodIndex')
                 ->name('api.goods.bills.index');
+            //用户收货订单列表
+            $api->get('users/{user}/receiver/bills', 'BillsController@receiverIndex')
+                ->name('api.users.receiver.bills.index');
+            //用户出货订单列表
+            $api->get('users/{user}/owner/bills', 'BillsController@ownerIndex')
+                ->name('api.users.owner.bills.index');
+            //订单处理
+            $api->post('bills/{bill}/deal','BillsController@billDeal')
+                ->name('api.bills.deal');
+
+            //创建协作者
+            $api->post('repositories/{repository}/parters','PartersController@create')
+                ->name('api.repositories.parters.create');
+            //删除协作者
+            $api->delete('repositories/{repository}/parters/{parter}','PartersController@destroy')
+                ->name('api.repositories.parters.destroy');
+            //仓库协作列表
+            $api->get('repositories/{repository}/parters','PartersController@repositoryIndex')
+                ->name('api.repositories.parters.index');
+            //用户协作列表
+            $api->get('users/{user}/parters','PartersController@userIndex')
+                ->name('api.users.parters.index');
+
+            //创建清单
+            $api->post('repositories/{repository}/inventories','InventoriesController@create')
+                ->name('api.repositories.inventories.create');
+            //删除清单
+            $api->delete('repositories/{repository}/inventories/{inventory}','InventoriesController@destroy')
+                ->name('api.repositories.inventories.destroy');
+            //修改清单
+            $api->put('repositories/{repository}/inventories/{inventory}','InventoriesController@update')
+                ->name('api.repositories.inventories.update');
+            //仓库清单列表
+            $api->get('repositories/{repository}/inventories','InventoriesController@repositoryIndex')
+                ->name('api.repositories.inventories.repositoryIndex');
+            //单据加入清单
+            $api->post('repositories/{repository}/inventories/{inventory}/bills/{bill}','InventoriesController@addBill')
+                ->name('repositories.inventories.bills.addBill');
+            //清单单据列表
+            $api->get('repositories/{repository}/inventories/{inventory}/bills','InventoriesController@inventoryIndex')
+                ->name('api.repositories.inventories.bills.inventoryIndex');
+
+
+
+
+
+
 
         });
     });

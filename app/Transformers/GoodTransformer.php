@@ -18,6 +18,7 @@ class GoodTransformer extends TransformerAbstract
             'sort' => (int) $good->sort,
             'factory' => $good->factory,
             'price' => (double) $good->price,
+            'num' => (int) $good->num,
             'unit' => $good->unit,
             'repository_id' => (int) $good->repository_id,
             'created_at' => (string) $good->created_at,
