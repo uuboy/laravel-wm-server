@@ -128,12 +128,17 @@ $api->version('v1',[
             //仓库清单列表
             $api->get('repositories/{repository}/inventories','InventoriesController@repositoryIndex')
                 ->name('api.repositories.inventories.repositoryIndex');
-            //单据加入清单
-            $api->post('repositories/{repository}/inventories/{inventory}/bills/{bill}','InventoriesController@addBill')
-                ->name('repositories.inventories.bills.addBill');
             //清单单据列表
             $api->get('repositories/{repository}/inventories/{inventory}/bills','InventoriesController@inventoryIndex')
                 ->name('api.repositories.inventories.bills.inventoryIndex');
+            //单据加入清单
+            $api->post('repositories/{repository}/inventories/{inventory}/bills/{bill}','InventoriesController@addBill')
+                ->name('repositories.inventories.bills.addBill');
+            //单据移出清单
+            $api->delete('repositories/{repository}/inventories/{inventory}/bills/{bill}','InventoriesController@deleteBill')
+                ->name('repositories.inventories.bills.deleteBill');
+
+
 
 
 
