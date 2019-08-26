@@ -39,6 +39,18 @@ return array(
     'menu' => [
         '用户与权限' => [
             'users',
+            'roles',
+            'permissions',
+        ],
+        '内容管理' => [
+            'repositories',
+            'goods',
+            'inventories',
+            'bills',
+            'parters'
+        ],
+        '站点管理' => [
+            'settings.site',
         ],
     ],
 
@@ -68,7 +80,7 @@ return array(
     'home_page' => 'users',
 
     // 右上角『返回主站』按钮的链接
-    'back_to_site_path' => '/home',
+    'back_to_site_path' => '/',
 
     // 当选项 `permission` 权限检测不通过时，会重定向用户到此处设置的路径
     'login_path' => 'login',

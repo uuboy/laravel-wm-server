@@ -105,4 +105,12 @@ return [
             'title' => '邮箱',
         ],
     ],
+    'rules' => [
+        'name' => 'required',
+        'email' => 'email',
+    ],
+    'messages' => [
+        'name.requierd' => '名称不能为空',
+        'email.email' => '邮箱格式不正确',
+    ],
 ];
