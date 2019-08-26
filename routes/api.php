@@ -81,41 +81,6 @@ $api->version('v1',[
             $api->get('repositories/{repository}/goods', 'GoodsController@repositoryIndex')
                 ->name('api.repositories.goods.index');
 
-            //创建单据
-            $api->post('goods/{good}/bills', 'BillsController@store')
-                ->name('api.goods.bills.store');
-            //删除单据
-            $api->delete('goods/{good}/bills/{bill}', 'BillsController@destroy')
-                ->name('api.goods.bills.destroy');
-            //修改单据
-            $api->put('goods/{good}/bills/{bill}', 'BillsController@update')
-                ->name('api.goods.bills.update');
-            //商品订单列表
-            $api->get('goods/{good}/bills', 'BillsController@goodIndex')
-                ->name('api.goods.bills.index');
-            //用户收货订单列表
-            $api->get('users/{user}/receiver/bills', 'BillsController@receiverIndex')
-                ->name('api.users.receiver.bills.index');
-            //用户出货订单列表
-            $api->get('users/{user}/owner/bills', 'BillsController@ownerIndex')
-                ->name('api.users.owner.bills.index');
-            //订单处理
-            $api->post('bills/{bill}/deal','BillsController@billDeal')
-                ->name('api.bills.deal');
-
-            //创建协作者
-            $api->post('repositories/{repository}/parters','PartersController@create')
-                ->name('api.repositories.parters.create');
-            //删除协作者
-            $api->delete('repositories/{repository}/parters/{parter}','PartersController@destroy')
-                ->name('api.repositories.parters.destroy');
-            //仓库协作列表
-            $api->get('repositories/{repository}/parters','PartersController@repositoryIndex')
-                ->name('api.repositories.parters.index');
-            //用户协作列表
-            $api->get('users/{user}/parters','PartersController@userIndex')
-                ->name('api.users.parters.index');
-
             //创建清单
             $api->post('repositories/{repository}/inventories','InventoriesController@create')
                 ->name('api.repositories.inventories.create');
@@ -137,6 +102,43 @@ $api->version('v1',[
             //单据移出清单
             $api->delete('repositories/{repository}/inventories/{inventory}/bills/{bill}','InventoriesController@deleteBill')
                 ->name('repositories.inventories.bills.deleteBill');
+
+            //创建单据
+            $api->post('repositories/{repository}/inventories/{inventory}/goods/{good}/bills', 'BillsController@store')
+                ->name('api.goods.bills.store');
+            //删除单据
+            $api->delete('repositories/{repository}/inventories/{inventory}/goods/{good}/bills/{bill}', 'BillsController@destroy')
+                ->name('api.repositories.inventories.goods.bills.destroy');
+            //修改单据
+            $api->put('repositories/{repository}/inventories/{inventory}/goods/{good}/bills/{bill}', 'BillsController@update')
+                ->name('api.goods.bills.update');
+            //商品订单列表
+            $api->get('repositories/{repository}/goods/{good}/bills', 'BillsController@goodIndex')
+                ->name('api.repositories.goods.bills.index');
+            //用户收货订单列表
+            $api->get('users/{user}/receiver/bills', 'BillsController@receiverIndex')
+                ->name('api.users.receiver.bills.index');
+            //用户出货订单列表
+            $api->get('rusers/{user}/owner/bills', 'BillsController@ownerIndex')
+                ->name('api.users.owner.bills.index');
+            //订单处理
+            $api->post('repositories/{repository}/inventories/{inventory}/bills/{bill}/deal','BillsController@billDeal')
+                ->name('api.repositories.inventories.bills.deal');
+
+            //创建协作者
+            $api->post('repositories/{repository}/parters','PartersController@create')
+                ->name('api.repositories.parters.create');
+            //删除协作者
+            $api->delete('repositories/{repository}/parters/{parter}','PartersController@destroy')
+                ->name('api.repositories.parters.destroy');
+            //仓库协作列表
+            $api->get('repositories/{repository}/parters','PartersController@repositoryIndex')
+                ->name('api.repositories.parters.index');
+            //用户协作列表
+            $api->get('users/{user}/parters','PartersController@userIndex')
+                ->name('api.users.parters.index');
+
+
 
 
 

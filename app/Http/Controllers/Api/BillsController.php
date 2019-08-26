@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use App\Models\Repository;
+use App\Models\Inventory;
 use App\Models\Bill;
 use App\Models\Good;
 use App\Models\User;
@@ -11,20 +12,18 @@ use App\Http\Requests\Api\BillRequest;
 
 class BillsController extends Controller
 {
-    public function store(Good $good,BillRequest $request, Bill $bill)
+    public function store(Repository $repository,Inventory $inventory,Good $good, Bill $bill,BillRequest $request)
     {
+        if ($inventory->repository_id != $repository->id || $good->repository_id != $repository->id){
+            return $this->response->errorBadRequest();
+        }
         $bill->fill($request->all());
         $bill->good()->associate($good);
+        $bill->inventory()->associate($inventory);
         if($bill->sort == 1){
             $bill->owner_id = $this->user()->id;
-            $good = $bill->good;
-            $good->num -= $bill->num;
-            $good->save();
         }elseif ($bill->sort == 2) {
             $bill->receiver_id = $this->user()->id;
-            $good = $bill->good;
-            $good->num += $bill->num;
-            $good->save();
         }else{
             return $this->response->errorBadRequest();
         }
@@ -33,11 +32,11 @@ class BillsController extends Controller
             ->setStatusCode(201);
     }
 
-    public function update(Good $good, Bill $bill, BillRequest $request)
+    public function update(Repository $repository,Inventory $inventory,Good $good, Bill $bill, BillRequest $request)
     {
         // $this->authorize('update', $bill);
 
-        if ($bill->good_id != $good->id) {
+        if ($inventory->repository_id != $repository->id || $good->repository_id !=$repository->id || $bill->good_id != $good->id) {
             return $this->response->errorBadRequest();
         }
         if($bill->sort == 1){
@@ -47,37 +46,23 @@ class BillsController extends Controller
             if($bill->sort == 2){
                 $bill->good->num -= $bill->num;
                 $bill->good->save();
+            }
+            else{
+
+                return $this->response->errorBadRequest();
             }
         }
 
         $bill->update($request->all());
 
-        if($bill->sort == 1){
-            $bill->good->num -= $bill->num;
-            $bill->good->save();
-        }else{
-            if($bill->sort == 2){
-                $bill->good->num += $bill->num;
-                $bill->good->save();
-            }
-        }
         return $this->response->item($bill, new BillTransformer());
     }
 
-    public function destroy(Good $good, Bill $bill)
+    public function destroy(Repository $repository,Inventory $inventory,Good $good, Bill $bill)
     {
         // $this->authorize('destroy', $bill);
-        if ($bill->good_id != $good->id) {
+        if ($inventory->repository_id != $repository->id || $good->repository_id !=$repository->id || $bill->good_id != $good->id) {
             return $this->response->errorBadRequest();
-        }
-        if($bill->sort == 1){
-            $bill->good->num += $bill->num;
-            $bill->good->save();
-        }else{
-            if($bill->sort == 2){
-                $bill->good->num -= $bill->num;
-                $bill->good->save();
-            }
         }
         $bill->delete();
         return $this->response->noContent();
@@ -106,28 +91,28 @@ class BillsController extends Controller
     //     return $this->response->paginator($bills, new BillTransformer());
     // }
 
-    public function goodIndex(Good $good, BillRequest $request)
+    public function goodIndex(Repository $repository,Inventory $inventory,Good $good, BillRequest $request)
     {
         $bills = $good->bills()->recent()->paginate(20);
 
         return $this->response->paginator($bills, new BillTransformer());
     }
 
-    public function ownerIndex(User $user, BillRequest $request)
+    public function ownerIndex(Repository $repository,Inventory $inventory,User $user, BillRequest $request)
     {
         $bills = $user->ownerBills()->recent()->paginate(20);
 
         return $this->response->paginator($bills, new BillTransformer());
     }
 
-    public function receiverIndex(User $user, BillRequest $request)
+    public function receiverIndex(Repository $repository,Inventory $inventory,User $user, BillRequest $request)
     {
         $bills = $user->receiverBills()->recent()->paginate(20);
 
         return $this->response->paginator($bills, new BillTransformer());
     }
 
-    public function billDeal(Bill $bill)
+    public function billDeal(Repository $repository,Inventory $inventory,Bill $bill)
     {
         if($bill->sort == 1 && is_null($bill->receiver_id) && !is_null($bill->owner_id)){
             $bill->receiver()->associate($this->user());

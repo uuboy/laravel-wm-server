@@ -18,8 +18,8 @@ class CreateBillsTable extends Migration
             $table->integer('sort');
             $table->bigInteger('num');
             $table->bigInteger('good_id')->unsigned()->default(0)->index();
-            $table->bigInteger('inventory_id')->unsigned()->default(0)->index();
-            $table->bigInteger('receiver_id')->unsigned()->default(0)->index();
+            $table->bigInteger('inventory_id')->unsigned()->default(0);
+            $table->bigInteger('receiver_id')->unsigned()->default(0);
             $table->bigInteger('owner_id')->unsigned()->default(0)->index();
             $table->timestamps();
         });

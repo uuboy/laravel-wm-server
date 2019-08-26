@@ -26,9 +26,6 @@ class AddReferences extends Migration
 
             $table->foreign('inventory_id')->references('id')->on('inventories')->onDelete('cascade');
 
-            $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
-
-            $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
 
         });
 
@@ -62,8 +59,6 @@ class AddReferences extends Migration
         Schema::table('bills', function (Blueprint $table) {
             $table->dropForeign(['good_id']);
             $table->dropForeign(['inventory_id']);
-            $table->dropForeign(['receiver_id']);
-            $table->dropForeign(['owner_id']);
         });
 
         Schema::table('inventories', function (Blueprint $table) {
