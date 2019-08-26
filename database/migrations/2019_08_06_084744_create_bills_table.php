@@ -17,10 +17,10 @@ class CreateBillsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('sort');
             $table->bigInteger('num');
-            $table->bigInteger('good_id')->nullable();
-            $table->bigInteger('inventory_id')->nullable();
-            $table->bigInteger('receiver_id')->nullable();
-            $table->bigInteger('owner_id')->nullable();
+            $table->bigInteger('good_id')->unsigned()->default(0)->index();
+            $table->bigInteger('inventory_id')->unsigned()->default(0)->index();
+            $table->bigInteger('receiver_id')->unsigned()->default(0)->index();
+            $table->bigInteger('owner_id')->unsigned()->default(0)->index();
             $table->timestamps();
         });
     }

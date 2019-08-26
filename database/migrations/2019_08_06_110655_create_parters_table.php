@@ -15,8 +15,8 @@ class CreatePartersTable extends Migration
     {
         Schema::create('parters', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->nullable();
-            $table->bigInteger('repository_id')->nullable();
+            $table->bigInteger('user_id')->unsigned()->default(0)->index();
+            $table->bigInteger('repository_id')->unsigned()->default(0)->index();
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ class CreateInventoriesTable extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('repository_id')->nullable();
+            $table->bigInteger('repository_id')->unsigned()->default(0)->index();
             $table->string('mark')->nullable();
             $table->timestamps();
         });

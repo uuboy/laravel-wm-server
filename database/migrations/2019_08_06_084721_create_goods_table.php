@@ -21,7 +21,7 @@ class CreateGoodsTable extends Migration
             $table->string('factory')->nullable();
             $table->double('price',15,2)->nullable();
             $table->string('unit')->nullable();
-            $table->bigInteger('repository_id')->nullable();
+            $table->bigInteger('repository_id')->unsigned()->default(0)->index();
             $table->timestamps();
         });
     }

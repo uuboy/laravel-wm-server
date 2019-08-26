@@ -15,7 +15,7 @@ return [
         'name' => [
             'title'    => '名称',
         ],
-        'tpye' => [
+        'type' => [
             'title' => '规格',
         ],
         'sort' => [
@@ -29,6 +29,9 @@ return [
         ],
         'unit' =>[
             'title' => '计量单位',
+        ],
+        'num' =>[
+            'title' => '数量',
         ],
         'repository' => [
             'title'    => '所属仓库',
@@ -60,6 +63,9 @@ return [
         ],
         'unit' =>[
             'title' => '计量单位',
+        ],
+        'num' =>[
+            'title' => '数量',
         ],
         'repository' => [
             'title'              => '仓库',
@@ -99,6 +105,9 @@ return [
         'unit' =>[
             'title' => '计量单位',
         ],
+        'num' =>[
+            'title' => '数量',
+        ],
         'repository' => [
             'title'              => '仓库',
             'type'               => 'relationship',
@@ -122,6 +131,7 @@ return [
         'factory' => 'string',
         'price' => 'numeric',
         'unit' => 'string',
+        'num' => 'required|integer',
     ],
     'messages' => [
         'name.required' => '名称不能为空',
@@ -132,5 +142,7 @@ return [
         'factory.string' => '生产厂商需为文本',
         'price.numric' => '价格需为数字',
         'unit.string' => '计量单位需为文本',
+        'num.required' => '数量不能为空',
+        'num.integer' => '数量必须为整数',
     ],
 ];

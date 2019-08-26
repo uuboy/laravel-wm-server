@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmailContract, JWTSubject
 {
-    use Notifiable;
+    use Notifiable,MustVerifyEmailTrait;
     use HasRoles;
 
     /**
