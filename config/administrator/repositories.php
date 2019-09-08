@@ -23,6 +23,9 @@ return [
                 return model_admin_link($value, $model->user);
             },
         ],
+        'inventory_count' => [
+            'title' => '清单数量'
+        ],
         'operation' => [
             'title'  => '管理',
             'sortable' => false,

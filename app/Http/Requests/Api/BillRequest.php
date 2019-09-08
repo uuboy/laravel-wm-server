@@ -11,13 +11,11 @@ class BillRequest extends FormRequest
         {
             case 'POST':
                 return [
-                    'sort' => 'required|integer',
                     'num' => 'required|integer',
                 ];
             break;
             case 'PUT':
                 return [
-                    'sort' => 'required|integer',
                     'num' => 'required|integer',
                 ];
             break;
@@ -32,8 +30,7 @@ class BillRequest extends FormRequest
     public function attributes()
     {
         return [
-            'sort' => '单据类型',
-            'num' => '单据数量',
+            'num' => '数量',
         ];
     }
 }

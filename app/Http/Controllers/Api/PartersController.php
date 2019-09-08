@@ -13,7 +13,6 @@ class PartersController extends Controller
 {
     public function create(Repository $repository,Parter $parter)
     {
-        // $parter->fill($request->all());
         $parter->user_id = $this->user()->id;
         $parter->repository()->associate($repository);
         $parter->save();
@@ -24,6 +23,7 @@ class PartersController extends Controller
 
     public function destroy(Repository $repository,Parter $parter)
     {
+        $this->authorize('destroy', $parter);
         if($parter->repository_id != $repository->id){
             return $this->response->errorBadRequest();
         }

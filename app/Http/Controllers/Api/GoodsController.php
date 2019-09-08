@@ -12,9 +12,11 @@ class GoodsController extends Controller
 {
     public function store(Repository $repository ,GoodRequest $request, Good $good)
     {
-        $good->fill($request->all());
+        $attributes = $request->only('name','type','sort','factory','price','unit');
+        $good->fill($attributes);
         $good->repository()->associate($repository);
         $good->num = 0;
+        $good->last_updater_id = $this->user()->id;
         $good->save();
 
         return $this->response->item($good, new GoodTransformer())
@@ -23,18 +25,30 @@ class GoodsController extends Controller
 
     public function update(Repository $repository, Good $good, GoodRequest $request)
     {
-        // $this->authorize('update', $good);
-
+        $this->authorize('update', $good);
         if ($good->repository_id != $repository->id) {
             return $this->response->errorBadRequest();
         }
-        $good->update($request->all());
+        $attributes = $request->only('name','type','sort','factory','price','unit');
+        $good->update($attributes);
+        $good->last_updater_id = $this->user()->id;
+        $good->save();
         return $this->response->item($good, new GoodTransformer());
     }
 
+    public function show(Repository $repository, Good $good)
+    {
+        $this->authorize('show', $good);
+        if ($good->repository_id != $repository->id) {
+            return $this->response->errorBadRequest();
+        }
+        return $this->response->item($good, new GoodTransformer());
+    }
+
+
     public function destroy(Repository $repository, Good $good)
     {
-        // $this->authorize('destroy', $good);
+        $this->authorize('destroy', $good);
         if ($good->repository_id != $repository->id) {
             return $this->response->errorBadRequest();
         }
@@ -42,28 +56,6 @@ class GoodsController extends Controller
         return $this->response->noContent();
     }
 
-    // public function index(GoodRequest $request, Good $good)
-    // {
-    //     $query = $good->query();
-
-    //     // if ($categoryId = $request->category_id) {
-    //     //     $query->where('category_id', $categoryId);
-    //     // }
-
-    //     switch ($request->order) {
-    //         case 'recent':
-    //             $query->recent();
-    //             break;
-
-    //         default:
-    //             $query->recentUpdated();
-    //             break;
-    //     }
-
-    //     $goods = $query->paginate(20);
-
-    //     return $this->response->paginator($goods, new GoodTransformer());
-    // }
 
     public function repositoryIndex(Repository $repository, GoodRequest $request)
     {

@@ -15,8 +15,17 @@ class InventoriesController extends Controller
 {
     public function create(Repository $repository,Inventory $inventory,InventoryRequest $request)
     {
-        $inventory->fill($request->all());
+        $attributes = $request->only(['name']);
+        $inventory->fill($attributes);
         $inventory->repository()->associate($repository);
+        if($inventory->sort == 1){
+            $inventory->owner_id = $this->user()->id;
+        }elseif ($inventory->sort == 2) {
+            $inventory->receiver_id = $this->user()->id;
+        }else{
+            return $this->response->errorBadRequest();
+        }
+        $inventory->last_updater_id = $this->user()->id;
         $inventory->save();
 
         return $this->response->item($inventory, new InventoryTransformer())
@@ -25,6 +34,7 @@ class InventoriesController extends Controller
 
     public function destroy(Repository $repository,Inventory $inventory)
     {
+        $this->authorize('destroy', $inventory);
         if($inventory->repository_id != $repository->id){
             return $this->response->errorBadRequest();
         }
@@ -34,10 +44,26 @@ class InventoriesController extends Controller
 
     public function update(Repository $repository,Inventory $inventory,InventoryRequest $request)
     {
+        $this->authorize('update', $inventory);
         if($inventory->repository_id != $repository->id){
             return $this->response->errorBadRequest();
         }
-        $inventory->update($request->all());
+
+        $attributes = $request->only(['name', 'receiver_id','owner_id']);
+        $inventory->update($attributes);
+        $inventory->last_updater_id = $this->user()->id;
+        $inventory->save();
+
+        return $this->response->item($inventory,new InventoryTransformer());
+    }
+
+    public function show(Repository $repository,Inventory $inventory)
+    {
+        $this->authorize('show', $inventory);
+        if($inventory->repository_id != $repository->id){
+            return $this->response->errorBadRequest();
+        }
+
         return $this->response->item($inventory,new InventoryTransformer());
     }
 
@@ -48,33 +74,18 @@ class InventoriesController extends Controller
         return $this->response->paginator($inventorys,new InventoryTransformer());
     }
 
-    public function inventoryIndex(Repository $repository,Inventory $inventory)
+     public function ownerIndex(User $user)
     {
-        if($inventory->repository_id != $repository->id){
-            return $this->response->errorBadRequest();
-        }
-        $bills = $inventory->bills()->recent()->paginate(20);
+        $inventories = $user->ownerInventories()->recent()->paginate(20);
 
-        return $this->response->paginator($bills, new BillTransformer());
+        return $this->response->paginator($inventories, new InventoryTransformer());
     }
 
-    public function addBill(Repository $repository,Inventory $inventory,Bill $bill)
+    public function receiverIndex(User $user)
     {
-        if($inventory->repository_id != $repository->id){
-            return $this->response->errorBadRequest();
-        }
-        $bill->inventory()->associate($inventory);
-        $bill->save();
-        return $this->response->item($bill,new BillTransformer());
+        $inventories = $user->receiverInventories()->recent()->paginate(20);
+
+        return $this->response->paginator($inventories, new InventoryTransformer());
     }
 
-    public function deleteBill(Repository $repository,Inventory $inventory,Bill $bill)
-    {
-        if($inventory->repository_id != $repository->id){
-            return $this->response->errorBadRequest();
-        }
-        $bill->inventory()->associate(null);
-        $bill->save();
-        return $this->response->item($bill,new BillTransformer());
-    }
 }

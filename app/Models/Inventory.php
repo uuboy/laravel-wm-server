@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Inventory extends Model
 {
-    protected $fillable = ['repository_id','mark'];
+    protected $fillable = ['name','sort','repository_id','receiver_id','owner_id'];
 
     public function repository()
     {
@@ -20,6 +20,25 @@ class Inventory extends Model
 
         return $this->hasMany(Bill::class);
 
+    }
+
+     public function receiver()
+    {
+
+        return $this->belongsTo(User::class,'receiver_id');
+
+    }
+
+    public function owner()
+    {
+
+        return $this->belongsTo(User::class,'owner_id');
+
+    }
+
+    public function lastUpdater()
+    {
+        return $this->belongsTo(User::class,'last_updater_id');
     }
 
     public function scopeRecentUpdated($query)

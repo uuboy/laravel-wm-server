@@ -8,11 +8,32 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\DB;
+use Auth;
 
 class User extends Authenticatable implements MustVerifyEmailContract, JWTSubject
 {
-    use Notifiable,MustVerifyEmailTrait;
+    use MustVerifyEmailTrait;
     use HasRoles;
+
+    use Notifiable {
+        notify as protected laravelNotify;
+    }
+
+    public function notify($instance)
+    {
+        // 如果要通知的人是当前用户，就不必通知了！
+        if ($this->id == Auth::id()) {
+            return;
+        }
+
+        // 只有数据库类型通知才需提醒，直接发送 Email 或者其他的都 Pass
+        if (method_exists($instance, 'toDatabase')) {
+            $this->increment('notification_count');
+        }
+
+        $this->laravelNotify($instance);
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -63,10 +84,23 @@ class User extends Authenticatable implements MustVerifyEmailContract, JWTSubjec
         $this->attributes['password'] = $value;
     }
 
-    public function parters()
+    public function isAuthorOf($model)
+    {
+        return $this->id == $model->user_id;
+    }
+
+    public function isParterOf($model)
+    {
+       return DB::table('parters')->where([
+            ['repository_id', '=', $model->id],
+            ['user_id', '=', $this->id],
+        ])->exists();
+    }
+
+    public function parterRepositories()
     {
 
-        return $this->hasMany(Parter::class);
+        return $this->BelongsToMany(Repository::class,'parters');
     }
 
 
@@ -77,14 +111,35 @@ class User extends Authenticatable implements MustVerifyEmailContract, JWTSubjec
 
     }
 
-    public function receiverBills()
+
+    public function receiverInventories()
     {
-        return $this->hasMany(Bill::class,'receiver_id');
+        return $this->hasMany(Inventory::class,'receiver_id');
     }
 
-    public function ownerBills()
+    public function ownerInventories()
     {
-        return $this->hasMany(Bill::class,'owner_id');
+        return $this->hasMany(Inventory::class,'owner_id');
+    }
+
+    public function UpdateRepositories()
+    {
+        return $this->hasMany(Repository::class,'last_updater_id');
+    }
+
+    public function UpdateGoods()
+    {
+        return $this->hasMany(Good::class,'last_updater_id');
+    }
+
+    public function UpdateInventories()
+    {
+        return $this->hasMany(Good::class,'last_updater_id');
+    }
+
+    public function UpdateBills()
+    {
+        return $this->hasMany(Bill::class,'last_updater_id');
     }
 
     public function scopeRecentUpdated($query)

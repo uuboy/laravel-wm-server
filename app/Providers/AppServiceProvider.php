@@ -3,8 +3,14 @@
 namespace App\Providers;
 
 use App\Models\User;
-use App\Observers\UserObserver;
+use App\Models\Repository;
+use App\Models\Good;
+use App\Models\Inventory;
 use App\Models\Bill;
+use App\Observers\UserObserver;
+use App\Observers\RepositoryObserver;
+use App\Observers\GoodObserver;
+use App\Observers\InventoryObserver;
 use App\Observers\BillObserver;
 use Illuminate\Support\ServiceProvider;
 
@@ -35,6 +41,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         User::observe(UserObserver::class);
+        Repository::observe(RepositoryObserver::class);
+        Good::observe(GoodObserver::class);
+        Inventory::observe(InventoryObserver::class);
         Bill::observe(BillObserver::class);
     }
 }

@@ -32,7 +32,12 @@ class Repository extends Model
     public function parters()
     {
 
-        return $this->hasMany(Parter::class);
+        return $this->belongsToMany(User::class,'parters');
+    }
+
+    public function lastUpdater()
+    {
+        return $this->belongsTo(User::class,'last_updater_id');
     }
 
     public function scopeWithOrder($query, $order)

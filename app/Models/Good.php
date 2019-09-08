@@ -15,11 +15,17 @@ class Good extends Model
 
     }
 
+
     public function bills()
     {
 
         return $this->hasMany(Bill::class);
 
+    }
+
+    public function lastUpdater()
+    {
+        return $this->belongsTo(User::class,'last_updater_id');
     }
 
     public function scopeWithOrder($query, $order)

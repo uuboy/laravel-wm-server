@@ -14,11 +14,13 @@ class BillObserver
      */
     public function created(Bill $bill)
     {
-        if($bill->sort == 1){
+        $bill->inventory->bill_count = $bill->inventory->bills->count();
+        $bill->inventory->save();
+        if($bill->inventory->sort == 1){
             $bill->good->num -= $bill->num;
             $bill->good->save();
         }
-        if($bill->sort == 2) {
+        if($bill->inventory->sort == 2) {
             $bill->good->num += $bill->num;
             $bill->good->save();
         }
@@ -32,11 +34,11 @@ class BillObserver
      */
     public function updated(Bill $bill)
     {
-        if($bill->sort == 1){
+        if($bill->inventory->sort == 1){
             $bill->good->num -= $bill->num;
             $bill->good->save();
         }
-        if($bill->sort == 2) {
+        if($bill->inventory->sort == 2) {
             $bill->good->num += $bill->num;
             $bill->good->save();
         }
@@ -50,11 +52,13 @@ class BillObserver
      */
     public function deleted(Bill $bill)
     {
-        if($bill->sort == 1){
+        $bill->inventory->bill_count = $bill->inventory->bills->count();
+        $bill->inventory->save();
+        if($bill->inventory->sort == 1){
             $bill->good->num += $bill->num;
             $bill->good->save();
         }
-        if($bill->sort == 2) {
+        if($bill->inventory->sort == 2) {
             $bill->good->num -= $bill->num;
             $bill->good->save();
         }

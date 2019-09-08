@@ -11,12 +11,14 @@ class InventoryRequest extends FormRequest
         {
             case 'POST':
                 return [
-                    'mark' => 'string'
+                    'sort' => 'required|integer',
+                    'name' => 'required|string',
                 ];
             break;
             case 'PUT':
                 return [
-
+                    'sort' => 'required|integer',
+                    'name' => 'required|string',
                 ];
             break;
 
@@ -30,7 +32,8 @@ class InventoryRequest extends FormRequest
     public function attributes()
     {
         return [
-            'mark' => '备注'
+            'name' => '名称',
+            'sort' => '类型',
         ];
     }
 }

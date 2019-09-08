@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bill extends Model
 {
-    protected $fillable = ['sort','num','good_id','inventory_id','receiver_id','owner_id'];
+    protected $fillable = ['sort','num','good_id','inventory_id'];
 
     public function good()
     {
@@ -22,18 +22,9 @@ class Bill extends Model
 
     }
 
-    public function receiver()
+    public function lastUpdater()
     {
-
-        return $this->belongsTo(User::class,'receiver_id');
-
-    }
-
-    public function owner()
-    {
-
-        return $this->belongsTo(User::class,'owner_id');
-
+        return $this->belongsTo(User::class,'last_updater_id');
     }
 
     public function scopeWithOrder($query, $order)

@@ -50,7 +50,12 @@ return [
         'email' => [
             'title' => '邮箱',
         ],
-
+        'repository_count' => [
+            'title' => '仓库数量'
+        ],
+        'notification_count' => [
+            'title' => '提醒数量'
+        ],
         'operation' => [
             'title'  => '管理',
             'sortable' => false,
