@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Repository;
 use App\Models\User;
+use App\Models\History;
 use Illuminate\Http\Request;
 use App\Transformers\RepositoryTransformer;
 use App\Http\Requests\Api\RepositoryRequest;
@@ -17,6 +18,13 @@ class RepositoriesController extends Controller
         $repository->user_id = $this->user()->id;
         $repository->last_updater_id = $this->user()->id;
         $repository->save();
+        History::create([
+            'user_id' => $repository->user->id,
+            'repository_id' => $repository->id,
+            'method' => 'create',
+            'model' => 'repository',
+            'model_name' => $repository->name,
+        ]);
 
         return $this->response->item($repository, new RepositoryTransformer())
             ->setStatusCode(201);
@@ -29,6 +37,13 @@ class RepositoriesController extends Controller
         $repository->update($attributes);
         $repository->last_updater_id = $this->user()->id;
         $repository->save();
+        History::create([
+            'user_id' => $repository->user->id,
+            'repository_id' => $repository->id,
+            'method' => 'update',
+            'model' => 'repository',
+            'model_name' => $repository->name,
+        ]);
         return $this->response->item($repository, new RepositoryTransformer());
     }
 

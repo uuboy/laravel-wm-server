@@ -147,8 +147,17 @@ $api->version('v1',[
                 ->name('api.users.parters.index');
 
             //用户通知列表
-            $api->get('users/{user}/notifications','NotificationsController@index')
+            $api->get('user/notifications','NotificationsController@index')
                 ->name('api.users.notifications.index');
+            //用户通知统计
+            $api->get('user/notifications/stats', 'NotificationsController@stats')
+                ->name('api.user.notifications.stats');
+            // 标记消息通知为已读
+            $api->put('user/read/notifications', 'NotificationsController@read')
+                ->name('api.user.notifications.read');
+                // 当前登录用户权限
+            $api->get('user/permissions', 'PermissionsController@index')
+                ->name('api.user.permissions.index');
 
 
 

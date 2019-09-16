@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Good;
+use App\Models\History;
 use App\Models\Repository;
 use Illuminate\Http\Request;
 use App\Transformers\GoodTransformer;
@@ -18,6 +19,13 @@ class GoodsController extends Controller
         $good->num = 0;
         $good->last_updater_id = $this->user()->id;
         $good->save();
+        History::create([
+            'user_id' => $good->repository->user->id,
+            'repository_id' => $good->repository->id,
+            'method' => 'create',
+            'model' => 'good',
+            'model_name' => $good->name,
+        ]);
 
         return $this->response->item($good, new GoodTransformer())
             ->setStatusCode(201);
@@ -33,6 +41,13 @@ class GoodsController extends Controller
         $good->update($attributes);
         $good->last_updater_id = $this->user()->id;
         $good->save();
+         History::create([
+            'user_id' => $good->repository->user->id,
+            'repository_id' => $good->repository->id,
+            'method' => 'update',
+            'model' => 'good',
+            'model_name' => $good->name,
+        ]);
         return $this->response->item($good, new GoodTransformer());
     }
 
@@ -53,6 +68,13 @@ class GoodsController extends Controller
             return $this->response->errorBadRequest();
         }
         $good->delete();
+        History::create([
+            'user_id' => $good->repository->user->id,
+            'repository_id' => $good->repository->id,
+            'method' => 'delete',
+            'model' => 'good',
+            'model_name' => $good->name,
+        ]);
         return $this->response->noContent();
     }
 

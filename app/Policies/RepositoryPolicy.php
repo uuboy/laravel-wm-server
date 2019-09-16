@@ -21,7 +21,7 @@ class RepositoryPolicy extends Policy
 
     public function show(User $user, Repository $repository)
     {
-        return $user->isAuthorOf($repository) || $user->isParterOf($good->repository);
+        return $user->isAuthorOf($repository) || $user->isParterOf($repository);
     }
 
 

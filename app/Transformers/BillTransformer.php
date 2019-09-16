@@ -7,7 +7,7 @@ use League\Fractal\TransformerAbstract;
 
 class BillTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = ['good','inventory','repository','lastUpdater'];
+    protected $availableIncludes = ['good','inventory','lastUpdater'];
 
     public function transform(Bill $bill)
     {
@@ -30,11 +30,6 @@ class BillTransformer extends TransformerAbstract
     public function includeInventory(Bill $bill)
     {
         return $this->item($bill->inventory, new InventoryTransformer());
-    }
-
-    public function includeRepository(Bill $bill)
-    {
-        return $this->item($bill->good->repository, new RepositoryTransformer());
     }
 
     public function includeLastUpdater(Bill $bill)

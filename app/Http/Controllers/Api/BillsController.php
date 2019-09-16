@@ -6,6 +6,7 @@ use App\Models\Inventory;
 use App\Models\Bill;
 use App\Models\Good;
 use App\Models\User;
+use App\Models\History;
 use Illuminate\Http\Request;
 use App\Transformers\BillTransformer;
 use App\Http\Requests\Api\BillRequest;
@@ -22,7 +23,15 @@ class BillsController extends Controller
         $bill->good()->associate($good);
         $bill->inventory()->associate($inventory);
         $bill->last_updater_id = $this->user()->id;
+        $this->authorize('create', $bill);
         $bill->save();
+        History::create([
+            'user_id' => $bill->inventory->repository->user->id,
+            'repository_id' => $bill->inventory->repository->id,
+            'method' => 'create',
+            'model' => 'bill',
+            'model_name' => $bill->inventory->name,
+        ]);
         return $this->response->item($bill, new BillTransformer())
             ->setStatusCode(201);
     }
@@ -52,6 +61,13 @@ class BillsController extends Controller
         $bill->update($attributes);
         $bill->last_updater_id = $this->user()->id;
         $bill->save();
+        History::create([
+            'user_id' => $bill->inventory->repository->user->id,
+            'repository_id' => $bill->inventory->repository->id,
+            'method' => 'update',
+            'model' => 'bill',
+            'model_name' => $bill->inventory->name,
+        ]);
 
         return $this->response->item($bill, new BillTransformer());
     }
@@ -74,6 +90,13 @@ class BillsController extends Controller
             return $this->response->errorBadRequest();
         }
         $bill->delete();
+        History::create([
+            'user_id' => $bill->inventory->repository->user->id,
+            'repository_id' => $bill->inventory->repository->id,
+            'method' => 'delete',
+            'model' => 'bill',
+            'model_name' => $bill->inventory->name,
+        ]);
         return $this->response->noContent();
     }
 

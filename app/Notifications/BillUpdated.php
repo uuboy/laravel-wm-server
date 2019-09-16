@@ -6,21 +6,21 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Models\Repository;
+use App\Models\Bill;
 
-class RepositoryUpdate extends Notification
+class BillUpdated extends Notification
 {
     use Queueable;
 
-    public $repository;
+    public $bill;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Repository $repository)
+    public function __construct(Bill $bill)
     {
-        $this->repository = $repository;
+        $this->bill = $bill;
     }
 
     /**
@@ -64,12 +64,13 @@ class RepositoryUpdate extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'id' => $this->repository->id,
-            'model' => 'repository',
-            'model_name' => $this->repository->name,
-            'user_id' => $this->repository->user->id,
-            'user_name' => $this->repository->user->name,
-            'user_avatar' => $this->repository->user->avatar,
+            'id' => $this->bill->id,
+            'model' => 'bill',
+            'method' => 'update',
+            'model_name' => $this->bill->name,
+            'user_id' => $this->bill->lastUpdater->id,
+            'user_name' => $this->bill->lastUpdater->name,
+            'user_avatar' => $this->bill->lastUpdater->avatar,
         ];
 
     }

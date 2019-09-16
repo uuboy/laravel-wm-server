@@ -6,6 +6,7 @@ use App\Models\Inventory;
 use App\Models\Repository;
 use App\Models\User;
 use App\Models\Bill;
+use App\Models\History;
 use Illuminate\Http\Request;
 use App\Transformers\InventoryTransformer;
 use App\Transformers\BillTransformer;
@@ -15,7 +16,7 @@ class InventoriesController extends Controller
 {
     public function create(Repository $repository,Inventory $inventory,InventoryRequest $request)
     {
-        $attributes = $request->only(['name']);
+        $attributes = $request->only(['name','sort']);
         $inventory->fill($attributes);
         $inventory->repository()->associate($repository);
         if($inventory->sort == 1){
@@ -26,7 +27,15 @@ class InventoriesController extends Controller
             return $this->response->errorBadRequest();
         }
         $inventory->last_updater_id = $this->user()->id;
+        $this->authorize('create', $inventory);
         $inventory->save();
+        History::create([
+            'user_id' => $inventory->repository->user->id,
+            'repository_id' => $inventory->repository->id,
+            'method' => 'create',
+            'model' => 'inventory',
+            'model_name' => $inventory->name,
+        ]);
 
         return $this->response->item($inventory, new InventoryTransformer())
             ->setStatusCode(201);
@@ -39,6 +48,13 @@ class InventoriesController extends Controller
             return $this->response->errorBadRequest();
         }
         $inventory->delete();
+         History::create([
+            'user_id' => $inventory->repository->user->id,
+            'repository_id' => $inventory->repository->id,
+            'method' => 'delete',
+            'model' => 'inventory',
+            'model_name' => $inventory->name,
+        ]);
         return $this->response->noContent();
     }
 
@@ -53,6 +69,13 @@ class InventoriesController extends Controller
         $inventory->update($attributes);
         $inventory->last_updater_id = $this->user()->id;
         $inventory->save();
+        History::create([
+            'user_id' => $inventory->repository->user->id,
+            'repository_id' => $inventory->repository->id,
+            'method' => 'update',
+            'model' => 'inventory',
+            'model_name' => $inventory->name,
+        ]);
 
         return $this->response->item($inventory,new InventoryTransformer());
     }
