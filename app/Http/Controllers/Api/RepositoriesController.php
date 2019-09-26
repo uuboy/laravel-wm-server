@@ -60,17 +60,17 @@ class RepositoriesController extends Controller
         return $this->response->item($repository,new RepositoryTransformer());
     }
 
-    public function userIndex(User $user)
+    public function userIndex()
     {
-        $repositories = $user->repositories()->recent()
-            ->paginate(20);
+        $repositories = $this->user()->repositories()->recent()
+            ->paginate(5);
 
         return $this->response->paginator($repositories, new RepositoryTransformer());
     }
 
-    public function parterIndex(User $user)
+    public function parterIndex()
     {
-        $repositories = $user->parterRepositories()->recent()
+        $repositories = $this->user()->parterRepositories()->recent()
             ->paginate(20);
 
         return $this->response->paginator($repositories, new RepositoryTransformer());

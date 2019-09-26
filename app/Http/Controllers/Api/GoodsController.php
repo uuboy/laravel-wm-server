@@ -8,6 +8,9 @@ use App\Models\Repository;
 use Illuminate\Http\Request;
 use App\Transformers\GoodTransformer;
 use App\Http\Requests\Api\GoodRequest;
+use App\Notifications\GoodUpdated;
+use App\Notifications\GoodDeleted;
+use App\Notifications\GoodCreated;
 
 class GoodsController extends Controller
 {
@@ -26,6 +29,8 @@ class GoodsController extends Controller
             'model' => 'good',
             'model_name' => $good->name,
         ]);
+
+        $good->repository->user->notify(new GoodCreated($good));
 
         return $this->response->item($good, new GoodTransformer())
             ->setStatusCode(201);
@@ -48,6 +53,9 @@ class GoodsController extends Controller
             'model' => 'good',
             'model_name' => $good->name,
         ]);
+
+        $good->repository->user->notify(new GoodUpdated($good));
+
         return $this->response->item($good, new GoodTransformer());
     }
 
@@ -75,6 +83,9 @@ class GoodsController extends Controller
             'model' => 'good',
             'model_name' => $good->name,
         ]);
+
+        $good->repository->user->notify(new GoodDeleted($good));
+
         return $this->response->noContent();
     }
 

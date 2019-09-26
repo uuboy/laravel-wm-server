@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Inventory extends Model
 {
-    protected $fillable = ['name','sort','repository_id','receiver_id','owner_id'];
+    protected $fillable = ['name','sort','repository_id','receiver_id','owner_id','deal_date'];
 
     public function repository()
     {

@@ -10,6 +10,9 @@ use App\Models\History;
 use Illuminate\Http\Request;
 use App\Transformers\BillTransformer;
 use App\Http\Requests\Api\BillRequest;
+use App\Notifications\BillUpdated;
+use App\Notifications\BillDeleted;
+use App\Notifications\BillCreated;
 
 class BillsController extends Controller
 {
@@ -32,6 +35,9 @@ class BillsController extends Controller
             'model' => 'bill',
             'model_name' => $bill->inventory->name,
         ]);
+
+        $bill->inventory->repository->user->notify(new BillCreated($bill));
+
         return $this->response->item($bill, new BillTransformer())
             ->setStatusCode(201);
     }
@@ -43,12 +49,17 @@ class BillsController extends Controller
         if ($inventory->repository_id != $repository->id || $good->repository_id !=$repository->id || $bill->good_id != $good->id) {
             return $this->response->errorBadRequest();
         }
+
+        $attributes = $request->only('num');
+
         if($bill->inventory->sort == 1){
             $bill->good->num += $bill->num;
+            $bill->good->num -= $attributes['num'];
             $bill->good->save();
         }else{
             if($bill->inventory->sort == 2){
                 $bill->good->num -= $bill->num;
+                $bill->good->num += $attributes['num'];
                 $bill->good->save();
             }
             else{
@@ -56,7 +67,6 @@ class BillsController extends Controller
                 return $this->response->errorBadRequest();
             }
         }
-        $attributes = $request->only('num');
 
         $bill->update($attributes);
         $bill->last_updater_id = $this->user()->id;
@@ -68,6 +78,8 @@ class BillsController extends Controller
             'model' => 'bill',
             'model_name' => $bill->inventory->name,
         ]);
+
+        $bill->inventory->repository->user->notify(new BillUpdated($bill));
 
         return $this->response->item($bill, new BillTransformer());
     }
@@ -97,6 +109,9 @@ class BillsController extends Controller
             'model' => 'bill',
             'model_name' => $bill->inventory->name,
         ]);
+
+        $bill->inventory->repository->user->notify(new BillDeleted($bill));
+
         return $this->response->noContent();
     }
 

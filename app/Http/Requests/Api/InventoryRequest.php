@@ -13,12 +13,14 @@ class InventoryRequest extends FormRequest
                 return [
                     'sort' => 'required|integer',
                     'name' => 'required|string',
+                    'deal_date' => 'required',
                 ];
             break;
             case 'PUT':
                 return [
                     'sort' => 'required|integer',
                     'name' => 'required|string',
+                    'deal_date' => 'required',
                 ];
             break;
 
@@ -34,6 +36,7 @@ class InventoryRequest extends FormRequest
         return [
             'name' => '名称',
             'sort' => '类型',
+            'deal_date' => '交易日期',
         ];
     }
 }

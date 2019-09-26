@@ -17,7 +17,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1',[
     'namespace' => 'App\Http\Controllers\Api',
-    'middleware' => ['serializer:array','bindings'],
+    'middleware' => ['serializer:array','bindings','change-locale'],
 ], function($api) {
     $api->group([
         'middleware' => 'api.throttle',
@@ -63,11 +63,11 @@ $api->version('v1',[
             $api->get('repositories/{repository}','RepositoriesController@show')
                 ->name('api.repositories.show');
             //用户仓库列表
-            $api->get('users/{user}/repositories', 'RepositoriesController@userIndex')
-                ->name('api.users.repositories.index');
+            $api->get('repositories', 'RepositoriesController@userIndex')
+                ->name('api.repositories.index');
             //用户协作仓库列表
-            $api->get('users/{user}/parter/repositories','RepositoriesController@parterIndex')
-                ->name('api.users.parter.repositories.index');
+            $api->get('parter/repositories','RepositoriesController@parterIndex')
+                ->name('api.parter.repositories.index');
 
 
 
@@ -173,8 +173,4 @@ $api->version('v1',[
     });
 });
 
-// $api->version('v2', function($api) {
-//     $api->get('version', function() {
-//         return response('this is version v2');
-//     });
-// });
+

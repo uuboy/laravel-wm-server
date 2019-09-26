@@ -11,12 +11,15 @@ use Illuminate\Http\Request;
 use App\Transformers\InventoryTransformer;
 use App\Transformers\BillTransformer;
 use App\Http\Requests\Api\InventoryRequest;
+use App\Notifications\InventoryUpdated;
+use App\Notifications\InventoryDeleted;
+use App\Notifications\InventoryCreated;
 
 class InventoriesController extends Controller
 {
     public function create(Repository $repository,Inventory $inventory,InventoryRequest $request)
     {
-        $attributes = $request->only(['name','sort']);
+        $attributes = $request->only(['name','sort','deal_date']);
         $inventory->fill($attributes);
         $inventory->repository()->associate($repository);
         if($inventory->sort == 1){
@@ -37,6 +40,8 @@ class InventoriesController extends Controller
             'model_name' => $inventory->name,
         ]);
 
+        $inventory->repository->user->notify(new InventoryCreated($inventory));
+
         return $this->response->item($inventory, new InventoryTransformer())
             ->setStatusCode(201);
     }
@@ -55,6 +60,9 @@ class InventoriesController extends Controller
             'model' => 'inventory',
             'model_name' => $inventory->name,
         ]);
+
+        $inventory->repository->user->notify(new InventoryDeleted($inventory));
+
         return $this->response->noContent();
     }
 
@@ -65,7 +73,7 @@ class InventoriesController extends Controller
             return $this->response->errorBadRequest();
         }
 
-        $attributes = $request->only(['name', 'receiver_id','owner_id']);
+        $attributes = $request->only(['name', 'receiver_id','owner_id','deal_date']);
         $inventory->update($attributes);
         $inventory->last_updater_id = $this->user()->id;
         $inventory->save();
@@ -76,6 +84,8 @@ class InventoriesController extends Controller
             'model' => 'inventory',
             'model_name' => $inventory->name,
         ]);
+
+        $inventory->repository->user->notify(new InventoryUpdated($inventory));
 
         return $this->response->item($inventory,new InventoryTransformer());
     }

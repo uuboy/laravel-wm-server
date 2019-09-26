@@ -3,9 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Bill;
-use App\Notifications\BillUpdated;
-use App\Notifications\BillDeleted;
-use App\Notifications\BillCreated;
+
 
 class BillObserver
 {
@@ -27,7 +25,7 @@ class BillObserver
             $bill->good->num += $bill->num;
             $bill->good->save();
         }
-        $bill->inventory->repository->user->notify(new BillCreated($bill));
+
 
     }
 
@@ -39,15 +37,7 @@ class BillObserver
      */
     public function updated(Bill $bill)
     {
-        if($bill->inventory->sort == 1){
-            $bill->good->num -= $bill->num;
-            $bill->good->save();
-        }
-        if($bill->inventory->sort == 2) {
-            $bill->good->num += $bill->num;
-            $bill->good->save();
-        }
-        $bill->inventory->repository->user->notify(new BillUpdated($bill));
+
 
     }
 
@@ -69,7 +59,7 @@ class BillObserver
             $bill->good->num -= $bill->num;
             $bill->good->save();
         }
-        $bill->inventory->repository->user->notify(new BillDeleted($bill));
+
 
     }
 

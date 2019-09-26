@@ -11,12 +11,12 @@ class BillRequest extends FormRequest
         {
             case 'POST':
                 return [
-                    'num' => 'required|integer',
+                    'num' => 'required|integer|min:0',
                 ];
             break;
             case 'PUT':
                 return [
-                    'num' => 'required|integer',
+                    'num' => 'required|integer|min:0',
                 ];
             break;
 
