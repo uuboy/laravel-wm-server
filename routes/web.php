@@ -15,3 +15,10 @@ Route::get('/', 'PagesController@root')->name('root');
 
 Auth::routes(['verify' => true]);
 
+
+Route::resource('repositories', 'RepositoriesController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
+Route::resource('inventories', 'InventoriesController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
+Route::resource('goods', 'GoodsController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
+Route::resource('bills', 'BillsController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
+Route::resource('factories', 'FactoriesController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
+Route::resource('parters', 'PartersController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
