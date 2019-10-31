@@ -18,6 +18,7 @@ class BillsController extends Controller
 {
     public function store(Repository $repository,Inventory $inventory,Good $good, Bill $bill,BillRequest $request)
     {
+        $this->authorize('create', $bill);
         if ($inventory->repository_id != $repository->id || $good->repository_id != $repository->id){
             return $this->response->errorBadRequest();
         }
@@ -26,8 +27,16 @@ class BillsController extends Controller
         $bill->good()->associate($good);
         $bill->inventory()->associate($inventory);
         $bill->last_updater_id = $this->user()->id;
-        $this->authorize('create', $bill);
-        $bill->save();
+        if($bill->inventory->sort == 1){
+            $bill->good->num -= $bill->num;
+            $bill->save();
+            $bill->good->save();
+        }
+        if($bill->inventory->sort == 2) {
+            $bill->good->num += $bill->num;
+            $bill->save();
+            $bill->good->save();
+        }
         History::create([
             'user_id' => $bill->inventory->repository->user->id,
             'repository_id' => $bill->inventory->repository->id,
@@ -56,21 +65,19 @@ class BillsController extends Controller
             $bill->good->num += $bill->num;
             $bill->good->num -= $attributes['num'];
             $bill->good->save();
-        }else{
-            if($bill->inventory->sort == 2){
-                $bill->good->num -= $bill->num;
-                $bill->good->num += $attributes['num'];
-                $bill->good->save();
-            }
-            else{
-
-                return $this->response->errorBadRequest();
-            }
+            $bill->update($attributes);
+            $bill->last_updater_id = $this->user()->id;
+            $bill->save();
+        }
+        if($bill->inventory->sort == 2){
+            $bill->good->num -= $bill->num;
+            $bill->good->num += $attributes['num'];
+            $bill->good->save();
+            $bill->update($attributes);
+            $bill->last_updater_id = $this->user()->id;
+            $bill->save();
         }
 
-        $bill->update($attributes);
-        $bill->last_updater_id = $this->user()->id;
-        $bill->save();
         History::create([
             'user_id' => $bill->inventory->repository->user->id,
             'repository_id' => $bill->inventory->repository->id,
@@ -101,7 +108,16 @@ class BillsController extends Controller
         if ($inventory->repository_id != $repository->id || $good->repository_id !=$repository->id || $bill->good_id != $good->id) {
             return $this->response->errorBadRequest();
         }
-        $bill->delete();
+        if($bill->inventory->sort == 1){
+            $bill->good->num += $bill->num;
+            $bill->good->save();
+            $bill->delete();
+        }
+        if($bill->inventory->sort == 2) {
+            $bill->good->num -= $bill->num;
+            $bill->good->save();
+            $bill->delete();
+        }
         History::create([
             'user_id' => $bill->inventory->repository->user->id,
             'repository_id' => $bill->inventory->repository->id,

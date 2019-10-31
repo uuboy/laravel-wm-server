@@ -17,15 +17,6 @@ class BillObserver
     {
         $bill->inventory->bill_count = $bill->inventory->bills->count();
         $bill->inventory->save();
-        if($bill->inventory->sort == 1){
-            $bill->good->num -= $bill->num;
-            $bill->good->save();
-        }
-        if($bill->inventory->sort == 2) {
-            $bill->good->num += $bill->num;
-            $bill->good->save();
-        }
-
 
     }
 
@@ -51,15 +42,6 @@ class BillObserver
     {
         $bill->inventory->bill_count = $bill->inventory->bills->count();
         $bill->inventory->save();
-        if($bill->inventory->sort == 1){
-            $bill->good->num += $bill->num;
-            $bill->good->save();
-        }
-        if($bill->inventory->sort == 2) {
-            $bill->good->num -= $bill->num;
-            $bill->good->save();
-        }
-
 
     }
 

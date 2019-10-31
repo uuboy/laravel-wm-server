@@ -17,8 +17,8 @@ class UsersTableSeeder extends Seeder
             'name' => 'L&L',
             'email' => '441778293@qq.com',
             'password' => bcrypt('secret'),
-            'weapp_openid' => 'oK14f5XJRGpFptwhYYXKsJQaKCOo',
-            'weixin_session_key' => 'c9nN8VhzE3DrgGTGAeBS7w=='
+            'weapp_openid' => 'ojzvF5N4zbwcQjpDoG_8z7Y1DAp8',
+            'weixin_session_key' => '9EEw4Br0nZUdUIbElKIFYg=='
         ]);
 
         $user = User::find(1);
