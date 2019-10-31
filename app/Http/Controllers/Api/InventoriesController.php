@@ -19,7 +19,7 @@ class InventoriesController extends Controller
 {
     public function create(Repository $repository,Inventory $inventory,InventoryRequest $request)
     {
-        $attributes = $request->only(['name','sort','deal_date']);
+        $attributes = $request->only(['name','sort','deal_date','factory_id']);
         $inventory->fill($attributes);
         $inventory->repository()->associate($repository);
         if($inventory->sort == 1){
@@ -73,7 +73,7 @@ class InventoriesController extends Controller
             return $this->response->errorBadRequest();
         }
 
-        $attributes = $request->only(['name', 'receiver_id','owner_id','deal_date']);
+        $attributes = $request->only(['name', 'receiver_id','owner_id','deal_date','factory_id']);
         $inventory->update($attributes);
         $inventory->last_updater_id = $this->user()->id;
         $inventory->save();

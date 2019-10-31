@@ -8,4 +8,9 @@ class Factory extends Model
 {
     protected $fillable = ['name','code','tel','bank','account','address'];
 
+    public function inventories()
+    {
+        return $this->hasMany(Inventory::class);
+    }
+
 }
