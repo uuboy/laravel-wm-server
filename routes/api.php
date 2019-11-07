@@ -51,8 +51,8 @@ $api->version('v1',[
             $api->put('user/avatar', 'UsersController@avatar')
                 ->name('api.user.avatar');
             //创建仓库
-            $api->post('repositories', 'RepositoriesController@store')
-                ->name('api.repositories.store');
+            $api->post('repositories', 'RepositoriesController@create')
+                ->name('api.repositories.create');
             //修改仓库
             $api->put('repositories/{repository}', 'RepositoriesController@update')
                 ->name('api.repositories.update');
@@ -158,6 +158,20 @@ $api->version('v1',[
                 // 当前登录用户权限
             $api->get('user/permissions', 'PermissionsController@index')
                 ->name('api.user.permissions.index');
+
+            //创建往来单位
+            $api->post('repositories/{repository}/factories','FactoriesController@create')
+                ->name('api.repositories.factories.create');
+            //修改往来单位
+            $api->put('repositories/{repository}/factories/{factory}','FactoriesController@update')
+                ->name('api.repositories.factories.update');
+            //删除往来单位
+            $api->delete('repositories/{repository}/factories/{factory}','FactoriesController@destroy')
+                ->name('api.repositories.factories.destroy');
+            //往来单位列表
+            $api->get('repositories/{repository}/factories','FactoriesController@index')
+                ->name('api.repositories.factories');
+
 
 
 

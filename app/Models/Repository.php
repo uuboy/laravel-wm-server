@@ -40,6 +40,11 @@ class Repository extends Model
         return $this->belongsTo(User::class,'last_updater_id');
     }
 
+    public function factories()
+    {
+        return $this->hasMany(Factory::class);
+    }
+
     public function scopeWithOrder($query, $order)
     {
         // 不同的排序，使用不同的数据读取逻辑

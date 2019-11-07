@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFactoryIdToInventoriesTable extends Migration
+class AddReferenceToInventoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddFactoryIdToInventoriesTable extends Migration
     public function up()
     {
         Schema::table('inventories', function (Blueprint $table) {
-            $table->bigInteger('factory_id')->unsigned()->default(0);
+            $table->foreign('factory_id')->references('id')->on('factories')->onDelete('cascade');
         });
     }
 
@@ -26,7 +26,7 @@ class AddFactoryIdToInventoriesTable extends Migration
     public function down()
     {
         Schema::table('inventories', function (Blueprint $table) {
-            $table->dropColumn('factory_id');
+            $table->dropForeign(['factory_id']);
         });
     }
 }

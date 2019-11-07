@@ -11,7 +11,7 @@ use App\Http\Requests\Api\RepositoryRequest;
 
 class RepositoriesController extends Controller
 {
-    public function store(Repository $repository, RepositoryRequest $request)
+    public function create(Repository $repository, RepositoryRequest $request)
     {
         $attributes = $request->only(['name']);
         $repository->fill($attributes);

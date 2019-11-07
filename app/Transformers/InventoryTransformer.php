@@ -18,6 +18,7 @@ class InventoryTransformer extends TransformerAbstract
             'deal_date' => $inventory->deal_date,
             'bill_count' => (int)$inventory->bill_count,
             'repository_id' => (int) $inventory->repository_id,
+            'factory_id' => (int) $inventory->factory_id,
             'receiver_id' => (int) $inventory->receiver_id,
             'owner_id' => (int) $inventory->owner_id,
             'last_updater_id' => (int) $inventory->last_updater_id,

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFactoryIdToInventoriesTable extends Migration
+class AddRepositoryIdToFactoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddFactoryIdToInventoriesTable extends Migration
      */
     public function up()
     {
-        Schema::table('inventories', function (Blueprint $table) {
-            $table->bigInteger('factory_id')->unsigned()->default(0);
+        Schema::table('factories', function (Blueprint $table) {
+            $table->bigInteger('repository_id')->unsigned()->default(0);
         });
     }
 
@@ -25,8 +25,8 @@ class AddFactoryIdToInventoriesTable extends Migration
      */
     public function down()
     {
-        Schema::table('inventories', function (Blueprint $table) {
-            $table->dropColumn('factory_id');
+        Schema::table('factories', function (Blueprint $table) {
+            $table->dropColumn('repository_id');
         });
     }
 }

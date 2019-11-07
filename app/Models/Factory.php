@@ -13,4 +13,9 @@ class Factory extends Model
         return $this->hasMany(Inventory::class);
     }
 
+    public function repository()
+    {
+        return $this->belongsTo(Repository::class);
+    }
+
 }

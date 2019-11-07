@@ -14,6 +14,7 @@ class InventoryRequest extends FormRequest
                     'sort' => 'required|integer',
                     'name' => 'required|string',
                     'deal_date' => 'required',
+                    'factory_id' => 'required|integer',
                 ];
             break;
             case 'PUT':
@@ -21,6 +22,7 @@ class InventoryRequest extends FormRequest
                     'sort' => 'required|integer',
                     'name' => 'required|string',
                     'deal_date' => 'required',
+                    'factory_id' => 'required|integer',
                 ];
             break;
 
@@ -37,6 +39,7 @@ class InventoryRequest extends FormRequest
             'name' => '名称',
             'sort' => '类型',
             'deal_date' => '交易日期',
+            'factory_id' => '往来单位',
         ];
     }
 }
