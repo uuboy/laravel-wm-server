@@ -25,8 +25,12 @@ $api->version('v1',[
         'expires' => config('api.rate_limits.sign.expires'),
     ], function($api) {
         // 小程序登录
-        $api->post('weapp/authorizations', 'AuthorizationsController@weappStore')
+        $api->post('weapp/authorizations', 'AuthorizationsController@weappLogin')
+            ->name('api.weapp.authorizations.login');
+        $api->post('weapp/register','AuthorizationsController@weappStore')
             ->name('api.weapp.authorizations.store');
+        $api->post('weapp/decrypt','AuthorizationsController@decrypt')
+            ->name('api.weapp.authorizations.decrypt');
         // 刷新token
         $api->put('authorizations/current', 'AuthorizationsController@update')
             ->name('api.authorizations.update');

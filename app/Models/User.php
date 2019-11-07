@@ -48,7 +48,7 @@ class User extends Authenticatable implements MustVerifyEmailContract, JWTSubjec
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','weixin_session_key', 'weapp_openid','avatar',
+        'name', 'email', 'password','weixin_session_key', 'weapp_openid','avatar','phone',
     ];
 
     /**
