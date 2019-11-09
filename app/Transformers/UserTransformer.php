@@ -14,6 +14,7 @@ class UserTransformer extends TransformerAbstract
         return [
             'id' => $user->id,
             'name' => $user->name,
+            'phone' => $user->phone,
             'email' => $user->email,
             'avatar' => $user->avatar,
             'bound_weapp' => ($user->weapp_openid) ? true : false,
