@@ -33,9 +33,11 @@ class AuthorizationsController extends Controller
         $decryptedData = $miniProgram->encryptor->decryptData($data['session_key'], $iv, $encryptedData);
 
         $phone = $decryptedData['phoneNumber'];
+        // 找到 手机号 对应的用户
+        $user2 = User::where('phone', $phone)->first();
 
         //未找到对应用户则创建用户
-        if (!$user) {
+        if (!$user&&!$user2) {
             $user = User::create([
                 'name' => $request->name,
                 'avatar' => $request->avatar,
@@ -44,12 +46,17 @@ class AuthorizationsController extends Controller
                 'weapp_openid' => $data['openid'],
                 'weixin_session_key' => $data['session_key']
              ]);
-        } else{
-            // 更新用户数据
+        }
+        if($user&&!$user2) {
+            $attributes['phone'] = $phone;
             $user->update($attributes);
         }
 
-
+        if($user2) {
+            $attributes['weapp_openid'] = $data['openid'];
+            $user = $user2;
+            $user->update($attributes);
+        }
 
         return $this->response->item($user, new UserTransformer())
             ->setMeta([
@@ -95,18 +102,18 @@ class AuthorizationsController extends Controller
             ->setStatusCode(201);
     }
 
-    public function decrypt(Request $request)
-    {
-        $miniProgram = \EasyWeChat::miniProgram();
-        $code = $request->code;
-        $data = $miniProgram->auth->session($code);
-        $session = $data['session_key'];
-        $iv = $request->iv;
-        $encryptedData = $request->encryptedData;
-        $decryptedData = $miniProgram->encryptor->decryptData($session, $iv, $encryptedData);
+    // public function decrypt(Request $request)
+    // {
+    //     $miniProgram = \EasyWeChat::miniProgram();
+    //     $code = $request->code;
+    //     $data = $miniProgram->auth->session($code);
+    //     $session = $data['session_key'];
+    //     $iv = $request->iv;
+    //     $encryptedData = $request->encryptedData;
+    //     $decryptedData = $miniProgram->encryptor->decryptData($session, $iv, $encryptedData);
 
-        return $decryptedData;
-    }
+    //     return $decryptedData;
+    // }
 
 
     public function update()

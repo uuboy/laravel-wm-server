@@ -14,8 +14,21 @@ class WeappAuthorizationRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'code' => 'required|string'
-        ];
+        switch($this->method()) {
+            case 'POST':
+                return [
+                    'code' => 'required|string',
+                ];
+                break;
+            case 'PATCH':
+                return [
+
+                ];
+                break;
+            case 'PUT':
+                return [
+
+                ];
+        }
     }
 }

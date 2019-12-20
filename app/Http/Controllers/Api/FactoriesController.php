@@ -15,6 +15,7 @@ class FactoriesController extends Controller
         $attributes = $request->only(['name','code','tel','bank','account','address']);
         $factory->fill($attributes);
         $factory->repository()->associate($repository);
+        $factory->last_updater_id = $this->user()->id;
         $factory->save();
 
         return $this->response->item($factory, new FactoryTransformer())
@@ -30,6 +31,8 @@ class FactoriesController extends Controller
 
         $attributes = $request->only(['name','code','tel','bank','account','address']);
         $factory->update($attributes);
+        $factory->last_updater_id = $this->user()->id;
+        $factory->save();
 
         return $this->response->item($factory, new FactoryTransformer());
     }

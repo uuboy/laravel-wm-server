@@ -32,8 +32,8 @@ class InventoryTransformer extends TransformerAbstract
         return $this->item($inventory->repository, new GoodTransformer());
     }
 
-     public function includeLastUpdater(Inventory $inventory)
-     {
+    public function includeLastUpdater(Inventory $inventory)
+    {
         return $this->item($inventory->lastUpdater, new UserTransformer());
-     }
+    }
 }

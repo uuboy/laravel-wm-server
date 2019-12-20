@@ -27,10 +27,11 @@ $api->version('v1',[
         // 小程序登录
         $api->post('weapp/authorizations', 'AuthorizationsController@weappLogin')
             ->name('api.weapp.authorizations.login');
+        //手机号注册
         $api->post('weapp/register','AuthorizationsController@weappStore')
             ->name('api.weapp.authorizations.store');
-        $api->post('weapp/decrypt','AuthorizationsController@decrypt')
-            ->name('api.weapp.authorizations.decrypt');
+        // $api->post('weapp/decrypt','AuthorizationsController@decrypt')
+        //     ->name('api.weapp.authorizations.decrypt');
         // 刷新token
         $api->put('authorizations/current', 'AuthorizationsController@update')
             ->name('api.authorizations.update');
@@ -40,7 +41,12 @@ $api->version('v1',[
         // 用户注册
         $api->post('users', 'UsersController@store')
             ->name('api.users.store');
-
+        });
+    $api->group([
+        'middleware' => 'api.throttle',
+        'limit' => config('api.rate_limits.access.limit'),
+        'expires' => config('api.rate_limits.access.expires'),
+    ], function($api) {
         // 需要 token 验证的接口
         $api->group(['middleware' => 'api.auth'], function($api) {
             // 当前登录用户信息
@@ -175,20 +181,12 @@ $api->version('v1',[
             //往来单位列表
             $api->get('repositories/{repository}/factories','FactoriesController@index')
                 ->name('api.repositories.factories');
-
-
-
-
-
-
-
-
-
-
-
-
         });
     });
 });
+
+
+
+
 
 
