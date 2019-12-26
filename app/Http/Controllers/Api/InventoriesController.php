@@ -22,9 +22,9 @@ class InventoriesController extends Controller
         $attributes = $request->only(['name','sort','deal_date','factory_id']);
         $inventory->fill($attributes);
         $inventory->repository()->associate($repository);
-        if($inventory->sort == 1){
+        if($inventory->sort == 0){
             $inventory->owner_id = $this->user()->id;
-        }elseif ($inventory->sort == 2) {
+        }elseif ($inventory->sort == 1) {
             $inventory->receiver_id = $this->user()->id;
         }else{
             return $this->response->errorBadRequest();
