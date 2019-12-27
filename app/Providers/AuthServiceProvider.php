@@ -15,11 +15,11 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
 		 \App\Models\History::class => \App\Policies\HistoryPolicy::class,
 		 \App\Models\Factory::class => \App\Policies\FactoryPolicy::class,
-        'App\Models\Repository' => 'App\Policies\RepositoryPolicy',
-        'App\Models\Good' => 'App\Policies\GoodPolicy',
-        'App\Models\Inventory' => 'App\Policies\InventoryPolicy',
-        'App\Models\Bill' => 'App\Policies\BillPolicy',
-        'App\Models\Parter' => 'App\Policies\ParterPolicy',
+        \App\Models\Repository::class => \App\Policies\RepositoryPolicy::class,
+        \App\Models\Good::class => \App\Policies\GoodPolicy::class,
+        \App\Models\Inventory::class => \App\Policies\InventoryPolicy::class,
+        \App\Models\Bill::class => \App\Policies\BillPolicy::class,
+        \App\Models\Parter::class => \App\Policies\ParterPolicy::class,
     ];
 
     /**

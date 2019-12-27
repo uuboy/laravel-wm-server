@@ -18,7 +18,6 @@ class BillsController extends Controller
 {
     public function store(Repository $repository,Inventory $inventory,Good $good, Bill $bill,BillRequest $request)
     {
-        $this->authorize('create', $bill);
         if ($inventory->repository_id != $repository->id || $good->repository_id != $repository->id){
             return $this->response->errorBadRequest();
         }
@@ -27,12 +26,13 @@ class BillsController extends Controller
         $bill->good()->associate($good);
         $bill->inventory()->associate($inventory);
         $bill->last_updater_id = $this->user()->id;
-        if($bill->inventory->sort == 1){
+        $this->authorize('create', $bill);
+        if($bill->inventory->sort == 0){
             $bill->good->num -= $bill->num;
             $bill->save();
             $bill->good->save();
         }
-        if($bill->inventory->sort == 2) {
+        if($bill->inventory->sort == 1) {
             $bill->good->num += $bill->num;
             $bill->save();
             $bill->good->save();
@@ -61,7 +61,7 @@ class BillsController extends Controller
 
         $attributes = $request->only('num');
 
-        if($bill->inventory->sort == 1){
+        if($bill->inventory->sort == 0){
             $bill->good->num += $bill->num;
             $bill->good->num -= $attributes['num'];
             $bill->good->save();
@@ -69,7 +69,7 @@ class BillsController extends Controller
             $bill->last_updater_id = $this->user()->id;
             $bill->save();
         }
-        if($bill->inventory->sort == 2){
+        if($bill->inventory->sort == 1){
             $bill->good->num -= $bill->num;
             $bill->good->num += $attributes['num'];
             $bill->good->save();
@@ -108,12 +108,12 @@ class BillsController extends Controller
         if ($inventory->repository_id != $repository->id || $good->repository_id !=$repository->id || $bill->good_id != $good->id) {
             return $this->response->errorBadRequest();
         }
-        if($bill->inventory->sort == 1){
+        if($bill->inventory->sort == 0){
             $bill->good->num += $bill->num;
             $bill->good->save();
             $bill->delete();
         }
-        if($bill->inventory->sort == 2) {
+        if($bill->inventory->sort == 1) {
             $bill->good->num -= $bill->num;
             $bill->good->save();
             $bill->delete();

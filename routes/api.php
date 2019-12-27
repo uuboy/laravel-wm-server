@@ -138,7 +138,7 @@ $api->version('v1',[
             $api->get('repositories/{repository}/goods/{good}/bills', 'BillsController@goodIndex')
                 ->name('api.repositories.goods.bills.goodindex');
              //清单单据列表
-            $api->get('repositories/{repository}/inventories/{inventory}/bills','BillsControllerr@inventoryIndex')
+            $api->get('repositories/{repository}/inventories/{inventory}/bills','BillsController@inventoryIndex')
                 ->name('api.repositories.inventories.bills.inventoryIndex');
 
 
