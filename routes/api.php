@@ -181,6 +181,7 @@ $api->version('v1',[
             //往来单位列表
             $api->get('repositories/{repository}/factories','FactoriesController@index')
                 ->name('api.repositories.factories');
+
         });
     });
 });
