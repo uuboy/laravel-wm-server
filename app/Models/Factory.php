@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Factory extends Model
 {
-    protected $fillable = ['name','code','tel','bank','account','address','last_updater_id','repository_id'];
+    protected $fillable = ['name','code','tel','bank','account','address','last_updater_id','repository_id','user_id'];
 
     public function inventories()
     {
@@ -18,6 +18,10 @@ class Factory extends Model
         return $this->belongsTo(Repository::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function lastUpdater()
     {
         return $this->belongsTo(User::class,'last_updater_id');

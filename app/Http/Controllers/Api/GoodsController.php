@@ -20,9 +20,12 @@ class GoodsController extends Controller
         $good->fill($attributes);
         $good->repository()->associate($repository);
         $good->num = 0;
+        $good->user_id = $this->user()->id;
         $good->last_updater_id = $this->user()->id;
+        $this->authorize('create', $good);
         $good->save();
         History::create([
+            'last_updater_id' => $good->last_updater_id,
             'user_id' => $good->repository->user->id,
             'repository_id' => $good->repository->id,
             'method' => 'create',
@@ -47,6 +50,7 @@ class GoodsController extends Controller
         $good->last_updater_id = $this->user()->id;
         $good->save();
          History::create([
+            'last_updater_id' => $good->last_updater_id,
             'user_id' => $good->repository->user->id,
             'repository_id' => $good->repository->id,
             'method' => 'update',
@@ -61,7 +65,6 @@ class GoodsController extends Controller
 
     public function show(Repository $repository, Good $good)
     {
-        $this->authorize('show', $good);
         if ($good->repository_id != $repository->id) {
             return $this->response->errorBadRequest();
         }
@@ -77,6 +80,7 @@ class GoodsController extends Controller
         }
         $good->delete();
         History::create([
+            'last_updater_id' => $good->last_updater_id,
             'user_id' => $good->repository->user->id,
             'repository_id' => $good->repository->id,
             'method' => 'delete',

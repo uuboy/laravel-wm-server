@@ -118,6 +118,26 @@ class User extends Authenticatable implements MustVerifyEmailContract, JWTSubjec
 
     }
 
+    public function inventories()
+    {
+        return $this->hasMany(Inventory::class);
+    }
+
+    public function goods()
+    {
+        return $this->hasMany(Good::class);
+    }
+
+    public function bills()
+    {
+        return $this->hasMany(Bill::class);
+    }
+
+    public function factories()
+    {
+        return $this->hasMany(Factory::class);
+    }
+
 
     public function receiverInventories()
     {
@@ -148,6 +168,7 @@ class User extends Authenticatable implements MustVerifyEmailContract, JWTSubjec
     {
         return $this->hasMany(Bill::class,'last_updater_id');
     }
+
 
     public function scopeRecentUpdated($query)
     {

@@ -14,16 +14,12 @@ class InventoryPolicy extends Policy
 
      public function update(User $user, Inventory $inventory)
     {
-        return $user->isAuthorOf($inventory->repository) || $user->isParterOf($inventory->repository);
+        return $user->isAuthorOf($inventory->repository) || ($user->isParterOf($inventory->repository) && $user->isAuthorOf($inventory));
     }
 
     public function destroy(User $user, Inventory $inventory)
     {
-        return $user->isAuthorOf($inventory->repository) || $user->isParterOf($inventory->repository);
+        return $user->isAuthorOf($inventory->repository) || ($user->isParterOf($inventory->repository) && $user->isAuthorOf($inventory));
     }
 
-    public function show(User $user, Inventory $inventory)
-    {
-        return $user->isAuthorOf($inventory->repository) || $user->isParterOf($inventory->repository);
-    }
 }

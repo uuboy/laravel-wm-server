@@ -29,10 +29,12 @@ class InventoriesController extends Controller
         }else{
             return $this->response->errorBadRequest();
         }
+        $inventory->user_id = $this->user()->id;
         $inventory->last_updater_id = $this->user()->id;
         $this->authorize('create', $inventory);
         $inventory->save();
         History::create([
+            'last_updater_id' => $inventory->last_updater_id,
             'user_id' => $inventory->repository->user->id,
             'repository_id' => $inventory->repository->id,
             'method' => 'create',
@@ -54,6 +56,7 @@ class InventoriesController extends Controller
         }
         $inventory->delete();
          History::create([
+            'last_updater_id' => $inventory->last_updater_id,
             'user_id' => $inventory->repository->user->id,
             'repository_id' => $inventory->repository->id,
             'method' => 'delete',
@@ -78,6 +81,7 @@ class InventoriesController extends Controller
         $inventory->last_updater_id = $this->user()->id;
         $inventory->save();
         History::create([
+            'last_updater_id' => $inventory->last_updater_id,
             'user_id' => $inventory->repository->user->id,
             'repository_id' => $inventory->repository->id,
             'method' => 'update',
@@ -92,7 +96,6 @@ class InventoriesController extends Controller
 
     public function show(Repository $repository,Inventory $inventory)
     {
-        $this->authorize('show', $inventory);
         if($inventory->repository_id != $repository->id){
             return $this->response->errorBadRequest();
         }

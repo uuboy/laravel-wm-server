@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Inventory extends Model
 {
-    protected $fillable = ['name','sort','repository_id','receiver_id','owner_id','deal_date','factory_id'];
+    protected $fillable = ['name','sort','repository_id','receiver_id','owner_id','deal_date','factory_id','user_id'];
 
     public function repository()
     {
@@ -39,6 +39,11 @@ class Inventory extends Model
 
         return $this->belongsTo(User::class,'owner_id');
 
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function lastUpdater()

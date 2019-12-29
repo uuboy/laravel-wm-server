@@ -25,6 +25,7 @@ class BillsController extends Controller
         $bill->fill($attributes);
         $bill->good()->associate($good);
         $bill->inventory()->associate($inventory);
+        $bill->user_id = $this->user()->id;
         $bill->last_updater_id = $this->user()->id;
         $this->authorize('create', $bill);
         if($bill->inventory->sort == 0){
@@ -38,6 +39,7 @@ class BillsController extends Controller
             $bill->good->save();
         }
         History::create([
+            'last_updater_id' => $bill->last_updater_id,
             'user_id' => $bill->inventory->repository->user->id,
             'repository_id' => $bill->inventory->repository->id,
             'method' => 'create',
@@ -79,6 +81,7 @@ class BillsController extends Controller
         }
 
         History::create([
+            'last_updater_id' => $bill->last_updater_id,
             'user_id' => $bill->inventory->repository->user->id,
             'repository_id' => $bill->inventory->repository->id,
             'method' => 'update',
@@ -93,7 +96,6 @@ class BillsController extends Controller
 
     public function show(Repository $repository,Inventory $inventory,Good $good, Bill $bill)
     {
-        $this->authorize('show', $bill);
 
         if ($inventory->repository_id != $repository->id || $good->repository_id !=$repository->id || $bill->good_id != $good->id) {
             return $this->response->errorBadRequest();
@@ -119,6 +121,7 @@ class BillsController extends Controller
             $bill->delete();
         }
         History::create([
+            'last_updater_id' => $bill->last_updater_id,
             'user_id' => $bill->inventory->repository->user->id,
             'repository_id' => $bill->inventory->repository->id,
             'method' => 'delete',

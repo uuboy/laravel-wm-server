@@ -15,16 +15,12 @@ class BillPolicy extends Policy
 
     public function update(User $user, Bill $bill)
     {
-        return $user->isAuthorOf($bill->good->repository) || $user->isParterOf($bill->good->repository);
+        return $user->isAuthorOf($bill->good->repository) || ($user->isParterOf($bill->good->repository) && $user->isAuthorOf($bill));
     }
 
     public function destroy(User $user, Bill $bill)
     {
-        return $user->isAuthorOf($bill->good->repository) || $user->isParterOf($bill->good->repository);
+        return $user->isAuthorOf($bill->good->repository) || ($user->isParterOf($bill->good->repository) && $user->isAuthorOf($bill));
     }
 
-    public function show(User $user, Bill $bill)
-    {
-        return $user->isAuthorOf($bill->good->repository) || $user->isParterOf($bill->good->repository);
-    }
 }

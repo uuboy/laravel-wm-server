@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Good extends Model
 {
-    protected $fillable = ['name','type','sort','factory','price','unit','repository_id'];
+    protected $fillable = ['name','type','sort','factory','price','unit','repository_id','user_id'];
 
     public function repository()
     {
@@ -21,6 +21,11 @@ class Good extends Model
 
         return $this->hasMany(Bill::class);
 
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function lastUpdater()

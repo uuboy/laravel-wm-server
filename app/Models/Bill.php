@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bill extends Model
 {
-    protected $fillable = ['sort','num','good_id','inventory_id'];
+    protected $fillable = ['sort','num','good_id','inventory_id','user_id'];
 
     public function good()
     {
@@ -20,6 +20,11 @@ class Bill extends Model
 
         return $this->belongsTo(Inventory::class);
 
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function lastUpdater()
