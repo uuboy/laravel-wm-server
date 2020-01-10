@@ -6,7 +6,6 @@ use App\Models\Inventory;
 use App\Models\Bill;
 use App\Models\Good;
 use App\Models\User;
-use App\Models\History;
 use Illuminate\Http\Request;
 use App\Transformers\BillTransformer;
 use App\Http\Requests\Api\BillRequest;
@@ -38,14 +37,6 @@ class BillsController extends Controller
             $bill->save();
             $bill->good->save();
         }
-        History::create([
-            'last_updater_id' => $bill->last_updater_id,
-            'user_id' => $bill->inventory->repository->user->id,
-            'repository_id' => $bill->inventory->repository->id,
-            'method' => 'create',
-            'model' => 'bill',
-            'model_name' => $bill->inventory->name,
-        ]);
 
         $bill->inventory->repository->user->notify(new BillCreated($bill));
 
@@ -80,14 +71,6 @@ class BillsController extends Controller
             $bill->save();
         }
 
-        History::create([
-            'last_updater_id' => $bill->last_updater_id,
-            'user_id' => $bill->inventory->repository->user->id,
-            'repository_id' => $bill->inventory->repository->id,
-            'method' => 'update',
-            'model' => 'bill',
-            'model_name' => $bill->inventory->name,
-        ]);
 
         $bill->inventory->repository->user->notify(new BillUpdated($bill));
 
@@ -120,14 +103,6 @@ class BillsController extends Controller
             $bill->good->save();
             $bill->delete();
         }
-        History::create([
-            'last_updater_id' => $bill->last_updater_id,
-            'user_id' => $bill->inventory->repository->user->id,
-            'repository_id' => $bill->inventory->repository->id,
-            'method' => 'delete',
-            'model' => 'bill',
-            'model_name' => $bill->inventory->name,
-        ]);
 
         $bill->inventory->repository->user->notify(new BillDeleted($bill));
 

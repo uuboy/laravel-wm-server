@@ -3,11 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use EloquentFilter\Filterable;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class Repository extends Model
 {
+    use Filterable,RevisionableTrait;
+    protected $keepRevisionOf = ['name','deleted_at'];
+    protected $revisionCreationsEnabled = true;
+    protected $historyLimit = 50;
+    protected $revisionCleanup = true;
     protected $fillable = ['name','user_id'];
-
     public function user()
     {
 
@@ -50,25 +56,11 @@ class Repository extends Model
         return $this->hasMany(Factory::class);
     }
 
-    public function scopeWithOrder($query, $order)
-    {
-        // 不同的排序，使用不同的数据读取逻辑
-        switch ($order) {
-            case 'recent':
-                $query->recent();
-                break;
-            default:
-                $query->recentUpdated();
-                break;
-        }
-        // 预加载防止 N+1 问题
-        return $query->with('user');
-    }
     public function scopeRecentUpdated($query)
     {
         return $query->orderBy('updated_at', 'desc');
     }
-    public function scopeRecent($query)
+    public function scopeRecentCreated($query)
     {
         // 按照创建时间排序
         return $query->orderBy('created_at', 'desc');

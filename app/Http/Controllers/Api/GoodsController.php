@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Good;
-use App\Models\History;
 use App\Models\Repository;
 use Illuminate\Http\Request;
 use App\Transformers\GoodTransformer;
@@ -24,14 +23,6 @@ class GoodsController extends Controller
         $good->last_updater_id = $this->user()->id;
         $this->authorize('create', $good);
         $good->save();
-        History::create([
-            'last_updater_id' => $good->last_updater_id,
-            'user_id' => $good->repository->user->id,
-            'repository_id' => $good->repository->id,
-            'method' => 'create',
-            'model' => 'good',
-            'model_name' => $good->name,
-        ]);
 
         $good->repository->user->notify(new GoodCreated($good));
 
@@ -49,14 +40,6 @@ class GoodsController extends Controller
         $good->update($attributes);
         $good->last_updater_id = $this->user()->id;
         $good->save();
-         History::create([
-            'last_updater_id' => $good->last_updater_id,
-            'user_id' => $good->repository->user->id,
-            'repository_id' => $good->repository->id,
-            'method' => 'update',
-            'model' => 'good',
-            'model_name' => $good->name,
-        ]);
 
         $good->repository->user->notify(new GoodUpdated($good));
 
@@ -82,14 +65,6 @@ class GoodsController extends Controller
             return $this->response->errorMethodNotAllowed();
         }
         $good->delete();
-        History::create([
-            'last_updater_id' => $good->last_updater_id,
-            'user_id' => $good->repository->user->id,
-            'repository_id' => $good->repository->id,
-            'method' => 'delete',
-            'model' => 'good',
-            'model_name' => $good->name,
-        ]);
 
         $good->repository->user->notify(new GoodDeleted($good));
 

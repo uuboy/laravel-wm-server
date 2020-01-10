@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\Factory;
 use App\Models\Repository;
-use App\Models\History;
 use App\Http\Requests\Api\FactoryRequest;
 use App\Transformers\FactoryTransformer;
 use App\Notifications\FactoryCreated;
@@ -23,14 +22,6 @@ class FactoriesController extends Controller
         $factory->last_updater_id = $this->user()->id;
         $this->authorize('create', $factory);
         $factory->save();
-        History::create([
-            'last_updater_id' => $factory->last_updater_id,
-            'user_id' => $factory->repository->user->id,
-            'repository_id' => $factory->repository->id,
-            'method' => 'create',
-            'model' => 'factory',
-            'model_name' => $factory->name,
-        ]);
         $factory->repository->user->notify(new FactoryCreated($factory));
 
         return $this->response->item($factory, new FactoryTransformer())
@@ -49,14 +40,6 @@ class FactoriesController extends Controller
         $factory->update($attributes);
         $factory->last_updater_id = $this->user()->id;
         $factory->save();
-        History::create([
-            'last_updater_id' => $factory->last_updater_id,
-            'user_id' => $factory->repository->user->id,
-            'repository_id' => $factory->repository->id,
-            'method' => 'update',
-            'model' => 'factory',
-            'model_name' => $factory->name,
-        ]);
         $factory->repository->user->notify(new FactoryUpdated($factory));
 
         return $this->response->item($factory, new FactoryTransformer());
@@ -73,14 +56,6 @@ class FactoriesController extends Controller
             return $this->response->errorMethodNotAllowed();
         }
         $factory->delete();
-        History::create([
-            'last_updater_id' => $factory->last_updater_id,
-            'user_id' => $factory->repository->user->id,
-            'repository_id' => $factory->repository->id,
-            'method' => 'delete',
-            'model' => 'factory',
-            'model_name' => $factory->name,
-        ]);
         $factory->repository->user->notify(new FactoryDeleted($factory));
         return $this->response->noContent();
     }

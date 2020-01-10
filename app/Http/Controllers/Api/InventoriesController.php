@@ -6,7 +6,6 @@ use App\Models\Inventory;
 use App\Models\Repository;
 use App\Models\User;
 use App\Models\Bill;
-use App\Models\History;
 use Illuminate\Http\Request;
 use App\Transformers\InventoryTransformer;
 use App\Transformers\BillTransformer;
@@ -33,14 +32,6 @@ class InventoriesController extends Controller
         $inventory->last_updater_id = $this->user()->id;
         $this->authorize('create', $inventory);
         $inventory->save();
-        History::create([
-            'last_updater_id' => $inventory->last_updater_id,
-            'user_id' => $inventory->repository->user->id,
-            'repository_id' => $inventory->repository->id,
-            'method' => 'create',
-            'model' => 'inventory',
-            'model_name' => $inventory->name,
-        ]);
 
         $inventory->repository->user->notify(new InventoryCreated($inventory));
 
@@ -55,14 +46,6 @@ class InventoriesController extends Controller
             return $this->response->errorBadRequest();
         }
         $inventory->delete();
-         History::create([
-            'last_updater_id' => $inventory->last_updater_id,
-            'user_id' => $inventory->repository->user->id,
-            'repository_id' => $inventory->repository->id,
-            'method' => 'delete',
-            'model' => 'inventory',
-            'model_name' => $inventory->name,
-        ]);
 
         $inventory->repository->user->notify(new InventoryDeleted($inventory));
 
@@ -80,14 +63,6 @@ class InventoriesController extends Controller
         $inventory->update($attributes);
         $inventory->last_updater_id = $this->user()->id;
         $inventory->save();
-        History::create([
-            'last_updater_id' => $inventory->last_updater_id,
-            'user_id' => $inventory->repository->user->id,
-            'repository_id' => $inventory->repository->id,
-            'method' => 'update',
-            'model' => 'inventory',
-            'model_name' => $inventory->name,
-        ]);
 
         $inventory->repository->user->notify(new InventoryUpdated($inventory));
 
