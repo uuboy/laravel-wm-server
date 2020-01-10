@@ -37,5 +37,11 @@ class UsersController extends Controller
         return $this->response->item($user, new UserTransformer())->setStatusCode(200);
     }
 
+    public function index()
+    {
+        $users = User::paginate(10);
+        return $this->response->paginator($users,new UserTransformer());
+    }
+
 
 }

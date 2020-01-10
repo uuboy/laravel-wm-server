@@ -7,13 +7,16 @@ use App\Models\Repository;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Transformers\ParterTransformer;
+use App\Transformers\RepositoryTransformer;
+use App\Transformers\UserTransformer;
 use App\Http\Requests\Api\ParterRequest;
 
 class PartersController extends Controller
 {
-    public function create(Repository $repository,Parter $parter)
+    public function create(Repository $repository,Parter $parter,ParterRequest $request)
     {
-        $parter->user_id = $this->user()->id;
+        $attributes = $request->only('user_id');
+        $parter->fill($attributes);
         $parter->repository()->associate($repository);
         $parter->save();
 

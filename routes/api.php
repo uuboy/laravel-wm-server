@@ -52,6 +52,9 @@ $api->version('v1',[
             // 当前登录用户信息
             $api->get('user', 'UsersController@me')
                 ->name('api.user.show');
+             //用户列表
+            $api->get('users','UsersController@index')
+                ->name('api.user.index');
             // 编辑登录用户信息
             $api->patch('user', 'UsersController@update')
                 ->name('api.user.update');
@@ -178,9 +181,13 @@ $api->version('v1',[
             //删除往来单位
             $api->delete('repositories/{repository}/factories/{factory}','FactoriesController@destroy')
                 ->name('api.repositories.factories.destroy');
+            //获取往来单位
+            $api->get('repositories/{repository}/factories/{factory}','FactoriesController@show')
+                ->name('api.repositories.factories.show');
             //往来单位列表
             $api->get('repositories/{repository}/factories','FactoriesController@index')
                 ->name('api.repositories.factories');
+
 
         });
     });

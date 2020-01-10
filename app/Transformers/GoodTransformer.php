@@ -7,7 +7,7 @@ use League\Fractal\TransformerAbstract;
 
 class GoodTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = ['repository','lastUpdater'];
+    protected $availableIncludes = ['repository','lastUpdater','user'];
 
     public function transform(Good $good)
     {
@@ -21,6 +21,7 @@ class GoodTransformer extends TransformerAbstract
             'num' => (int) $good->num,
             'unit' => $good->unit,
             'repository_id' => (int) $good->repository_id,
+            'user_id' => (int) $good->user_id,
             'last_updater_id' => (int) $good->last_updater_id,
             'created_at' => (string) $good->created_at,
             'updated_at' => (string) $good->updated_at,
@@ -35,5 +36,10 @@ class GoodTransformer extends TransformerAbstract
     public function includeLastUpdater(Good $good)
     {
         return $this->item($good->lastUpdater, new UserTransformer());
+    }
+
+    public function includeUser(Good $good)
+    {
+        return $this->item($good->user, new UserTransformer());
     }
 }

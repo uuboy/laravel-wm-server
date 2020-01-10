@@ -53,14 +53,6 @@ class RepositoriesController extends Controller
     {
         $this->authorize('destroy', $repository);
         $repository->delete();
-        History::create([
-            'last_updater_id' => $repository->last_updater_id,
-            'user_id' => $repository->user->id,
-            'repository_id' => $repository->id,
-            'method' => 'delete',
-            'model' => 'repository',
-            'model_name' => $repository->name,
-        ]);
         return $this->response->noContent();
     }
 

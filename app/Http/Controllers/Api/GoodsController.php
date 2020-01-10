@@ -78,6 +78,9 @@ class GoodsController extends Controller
         if ($good->repository_id != $repository->id) {
             return $this->response->errorBadRequest();
         }
+        if ($good->bills->isNotEmpty()) {
+            return $this->response->errorMethodNotAllowed();
+        }
         $good->delete();
         History::create([
             'last_updater_id' => $good->last_updater_id,

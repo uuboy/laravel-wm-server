@@ -110,6 +110,10 @@ class User extends Authenticatable implements MustVerifyEmailContract, JWTSubjec
         return $this->BelongsToMany(Repository::class,'parters');
     }
 
+    public function parters()
+    {
+        return $this->hasMany(Parter::class);
+    }
 
     public function repositories()
     {

@@ -7,7 +7,7 @@ use League\Fractal\TransformerAbstract;
 
 class InventoryTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = ['repository','lastUpdater'];
+    protected $availableIncludes = ['repository','lastUpdater','user','factory'];
 
     public function transform(Inventory $inventory)
     {
@@ -21,6 +21,7 @@ class InventoryTransformer extends TransformerAbstract
             'factory_id' => (int) $inventory->factory_id,
             'receiver_id' => (int) $inventory->receiver_id,
             'owner_id' => (int) $inventory->owner_id,
+            'user_id' => (int) $inventory->user_id,
             'last_updater_id' => (int) $inventory->last_updater_id,
             'created_at' => (string) $inventory->created_at,
             'updated_at' => (string) $inventory->updated_at,
@@ -35,5 +36,15 @@ class InventoryTransformer extends TransformerAbstract
     public function includeLastUpdater(Inventory $inventory)
     {
         return $this->item($inventory->lastUpdater, new UserTransformer());
+    }
+
+    public function includeUser(Inventory $inventory)
+    {
+        return $this->item($inventory->user, new UserTransformer());
+    }
+
+    public function includeFactory(Inventory $inventory)
+    {
+        return $this->item($inventory->factory, new FactoryTransformer());
     }
 }

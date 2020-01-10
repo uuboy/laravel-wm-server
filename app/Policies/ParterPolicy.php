@@ -10,6 +10,6 @@ class ParterPolicy extends Policy
 
     public function destroy(User $user, Parter $parter)
     {
-        return $user->isAuthorOf($parter->repository) || $user->isAuthorOf($parter);
+        return $user->isAuthorOf($parter->repository);
     }
 }

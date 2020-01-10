@@ -5,8 +5,12 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\Factory;
 use App\Models\Repository;
+use App\Models\History;
 use App\Http\Requests\Api\FactoryRequest;
 use App\Transformers\FactoryTransformer;
+use App\Notifications\FactoryCreated;
+use App\Notifications\FactoryUpdated;
+use App\Notifications\FactoryDeleted;
 
 class FactoriesController extends Controller
 {
@@ -65,7 +69,9 @@ class FactoriesController extends Controller
         {
             return $this->response->errorBadRequest();
         }
-
+        if ($factory->inventories->isNotEmpty()) {
+            return $this->response->errorMethodNotAllowed();
+        }
         $factory->delete();
         History::create([
             'last_updater_id' => $factory->last_updater_id,
@@ -77,6 +83,14 @@ class FactoriesController extends Controller
         ]);
         $factory->repository->user->notify(new FactoryDeleted($factory));
         return $this->response->noContent();
+    }
+
+     public function show(Repository $repository, Factory $factory)
+    {
+        if ($factory->repository_id != $repository->id) {
+            return $this->response->errorBadRequest();
+        }
+        return $this->response->item($factory, new FactoryTransformer());
     }
 
     public function index(Repository $repository)

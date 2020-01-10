@@ -29,10 +29,15 @@ class Repository extends Model
 
     }
 
-    public function parters()
+    public function parterUsers()
     {
 
         return $this->belongsToMany(User::class,'parters');
+    }
+
+    public function parters()
+    {
+        return $this->hasMany(Parter::class);
     }
 
     public function lastUpdater()

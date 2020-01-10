@@ -7,7 +7,7 @@ use League\Fractal\TransformerAbstract;
 
 class BillTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = ['good','inventory','lastUpdater'];
+    protected $availableIncludes = ['good','inventory','lastUpdater','user'];
 
     public function transform(Bill $bill)
     {
@@ -16,6 +16,7 @@ class BillTransformer extends TransformerAbstract
             'num' => (int) $bill->num,
             'good_id' => (int) $bill->good_id,
             'inventory_id' => (int) $bill->inventory_id,
+            'user_id' => (int) $bill->user_id,
             'last_updater_id' => (int) $bill->last_updater_id,
             'created_at' => (string) $bill->created_at,
             'updated_at' => (string) $bill->updated_at,
@@ -35,5 +36,10 @@ class BillTransformer extends TransformerAbstract
     public function includeLastUpdater(Bill $bill)
     {
         return $this->item($bill->lastUpdater, new UserTansfromer());
+    }
+
+    public function includeUser(Bill $bill)
+    {
+        return $this->item($bill->user, new UserTansfromer());
     }
 }
