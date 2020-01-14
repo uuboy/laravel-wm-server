@@ -34,16 +34,22 @@ class PartersController extends Controller
         return $this->response->noContent();
     }
 
-    public function repositoryIndex(Repository $repository)
+    public function repositoryIndex(Repository $repository, Request $request)
     {
-        $parters = $repository->parters()->recent()->paginate(20);
+        $parters = $repository->parters()
+                    ->search($request->keyword, null, true)
+                    ->filter($request->all())
+                    ->paginate(20);
 
         return $this->response->paginator($parters,new ParterTransformer());
     }
 
-    public function userIndex(User $user)
+    public function userIndex(User $user, Request $request)
     {
-        $parters = $user->parters()->recent()->paginate(20);
+        $parters = $user->parters()
+                    ->search($request->keyword, null, true)
+                    ->filter($request->all())
+                    ->paginate(20);
 
         return $this->response->paginator($parters,new ParterTransformer());
     }

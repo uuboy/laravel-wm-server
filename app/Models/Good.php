@@ -2,11 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
 class Good extends Model
 {
+
+    protected $keepRevisionOf = ['name','type','sort','factory','price','unit','deleted_at'];
+    protected $revisionCreationsEnabled = true;
+    protected $historyLimit = 5;
+    protected $revisionCleanup = true;
+
     protected $fillable = ['name','type','sort','factory','price','unit','repository_id','user_id'];
+
+    protected $searchable = [
+        'columns' => [
+            'goods.name' => 10,
+            'goods.type' => 10,
+            'goods.factory' => 10,
+            'goods.price' => 10,
+        ],
+        'joins' => [
+        ],
+    ];
 
     public function repository()
     {
@@ -46,15 +62,6 @@ class Good extends Model
         }
         // 预加载防止 N+1 问题
         return $query->with('repository');
-    }
-    public function scopeRecentUpdated($query)
-    {
-        return $query->orderBy('updated_at', 'desc');
-    }
-    public function scopeRecent($query)
-    {
-        // 按照创建时间排序
-        return $query->orderBy('created_at', 'desc');
     }
 
 }

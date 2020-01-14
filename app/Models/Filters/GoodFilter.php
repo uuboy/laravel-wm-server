@@ -4,7 +4,7 @@ namespace App\Models\Filters;
 
 use EloquentFilter\ModelFilter;
 
-class RepositoryFilter extends ModelFilter
+class GoodFilter extends ModelFilter
 {
     /**
     * Related Models that have ModelFilters as well as the method on the ModelFilter
@@ -12,11 +12,31 @@ class RepositoryFilter extends ModelFilter
     *
     * @var array
     */
-    public $relations = ['inventories' =>['last_updater_id']];
+    public $relations = [];
+
+    public function lastUpdater($id)
+    {
+        return $this->where('last_updater_id',$id);
+    }
 
     public function name($value)
     {
-        return $this->whereLike('name', $value);
+        return $this->whereLike('name',$value);
+    }
+
+    public function type($value)
+    {
+        return $this->whereLike('type',$value);
+    }
+
+    public function sort($value)
+    {
+        return $this->where('sort',$value);
+    }
+
+    public function factory($value)
+    {
+        return $this->whereLike('factory',$value);
     }
 
     public function order($value)
@@ -33,6 +53,7 @@ class RepositoryFilter extends ModelFilter
                 break;
         }
     }
+
 
     public function setup()
     {

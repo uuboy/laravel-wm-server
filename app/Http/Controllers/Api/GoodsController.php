@@ -74,7 +74,10 @@ class GoodsController extends Controller
 
     public function repositoryIndex(Repository $repository, GoodRequest $request)
     {
-        $goods = $repository->goods()->recent()->paginate(20);
+        $goods = $repository->goods()
+                    ->search($request->keyword, null, true)
+                    ->filter($request->all())
+                    ->paginate(20);
 
         return $this->response->paginator($goods, new GoodTransformer());
     }

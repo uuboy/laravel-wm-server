@@ -2,10 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
 class Parter extends Model
 {
+    protected $keepRevisionOf = ['user_id','repository_id'];
+    protected $revisionCreationsEnabled = false;
+    protected $historyLimit = 5;
+    protected $revisionCleanup = true;
+    protected $searchable = [
+        'columns' => [
+            'users.name' => 10,
+        ],
+        'joins' => [
+            'users' => ['users.id','parters.user_id'],
+        ],
+    ];
 
     protected $fillable = ['user_id','repository_id'];
 
@@ -35,15 +46,6 @@ class Parter extends Model
         }
         // 预加载防止 N+1 问题
         return $query->with('repository');
-    }
-    public function scopeRecentUpdated($query)
-    {
-        return $query->orderBy('updated_at', 'desc');
-    }
-    public function scopeRecent($query)
-    {
-        // 按照创建时间排序
-        return $query->orderBy('created_at', 'desc');
     }
 
 }

@@ -114,7 +114,10 @@ class BillsController extends Controller
         if($inventory->repository_id != $repository->id){
             return $this->response->errorBadRequest();
         }
-        $bills = $inventory->bills()->recent()->paginate(20);
+        $bills = $inventory->bills()
+                    ->search($request->keyword, null, true)
+                    ->filter($request->all())
+                    ->paginate(20);
 
         return $this->response->paginator($bills, new BillTransformer());
     }
@@ -124,7 +127,7 @@ class BillsController extends Controller
         if($good->repository_id != $repository->id){
             return $this->response->errorBadRequest();
         }
-        $bills = $good->bills()->recent()->paginate(20);
+        $bills = $good->bills()->filter($request->all())->paginate(20);
 
         return $this->response->paginator($bills, new BillTransformer());
     }

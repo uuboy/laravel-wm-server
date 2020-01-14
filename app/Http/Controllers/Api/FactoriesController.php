@@ -68,9 +68,12 @@ class FactoriesController extends Controller
         return $this->response->item($factory, new FactoryTransformer());
     }
 
-    public function index(Repository $repository)
+    public function index(Repository $repository, FactoryRequest $request)
     {
-        $factories = $repository->factories()->orderBy('id','desc')->paginate(20);
+        $factories = $repository->factories()
+                        ->search($request->keyword, null, true)
+                        ->filter($request->all())
+                        ->paginate(20);
 
         return $this->response->paginator($factories, new FactoryTransformer());
     }

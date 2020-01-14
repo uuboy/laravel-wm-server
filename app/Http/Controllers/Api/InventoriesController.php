@@ -78,23 +78,32 @@ class InventoriesController extends Controller
         return $this->response->item($inventory,new InventoryTransformer());
     }
 
-    public function repositoryIndex(Repository $repository)
+    public function repositoryIndex(Repository $repository,InventoryRequest $request)
     {
-        $inventorys = $repository->inventories()->recent()->paginate(20);
+        $inventorys = $repository->inventories()
+                        ->search($request->keyword, null, true)
+                        ->filter($request->all())
+                        ->paginate(20);
 
         return $this->response->paginator($inventorys,new InventoryTransformer());
     }
 
-     public function ownerIndex(User $user)
+     public function ownerIndex(User $user,InventoryRequest $request)
     {
-        $inventories = $user->ownerInventories()->recent()->paginate(20);
+        $inventories = $user->ownerInventories()
+                        ->search($request->keyword, null, true)
+                        ->filter($request->all())
+                        ->paginate(20);
 
         return $this->response->paginator($inventories, new InventoryTransformer());
     }
 
-    public function receiverIndex(User $user)
+    public function receiverIndex(User $user,InventoryRequest $request)
     {
-        $inventories = $user->receiverInventories()->recent()->paginate(20);
+        $inventories = $user->receiverInventories()
+                        ->search($request->keyword, null, true)
+                        ->filter($request->all())
+                        ->paginate(20);
 
         return $this->response->paginator($inventories, new InventoryTransformer());
     }

@@ -10,11 +10,32 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use EloquentFilter\Filterable;
+use Venturecraft\Revisionable\RevisionableTrait;
+use Nicolaslopezj\Searchable\SearchableTrait;
+use Watson\Rememberable\Rememberable;
 
 class User extends Authenticatable implements MustVerifyEmailContract, JWTSubject
 {
     use MustVerifyEmailTrait;
     use HasRoles;
+    use Filterable,SearchableTrait,RevisionableTrait;
+    use Rememberable;
+
+    protected $keepRevisionOf = ['name','email','phone','deleted_at'];
+    protected $revisionCreationsEnabled = true;
+    protected $historyLimit = 5;
+    protected $revisionCleanup = true;
+
+    protected $searchable = [
+        'columns' => [
+            'users.name' => 10,
+            'users.phone' => 10,
+            'users.email' => 10,
+        ],
+        'joins' => [
+        ],
+    ];
 
     use Notifiable {
         notify as protected laravelNotify;
@@ -173,14 +194,14 @@ class User extends Authenticatable implements MustVerifyEmailContract, JWTSubjec
         return $this->hasMany(Bill::class,'last_updater_id');
     }
 
-
     public function scopeRecentUpdated($query)
     {
         return $query->orderBy('updated_at', 'desc');
     }
-    public function scopeRecent($query)
+    public function scopeRecentCreated($query)
     {
         // 按照创建时间排序
         return $query->orderBy('created_at', 'desc');
     }
+
 }

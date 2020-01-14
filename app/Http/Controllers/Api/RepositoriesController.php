@@ -45,18 +45,22 @@ class RepositoriesController extends Controller
         return $this->response->item($repository,new RepositoryTransformer());
     }
 
-    public function userIndex(RepositoryRequest $request)
+    public function userIndex(User $user, RepositoryRequest $request)
     {
-        $repositories = $this->user()->repositories()->filter($request->all())
-            ->paginate(5);
+        $repositories = $user->repositories()
+                            ->search($request->keyword, null, true)
+                            ->filter($request->all())
+                            ->paginate(5);
 
         return $this->response->paginator($repositories, new RepositoryTransformer());
     }
 
-    public function parterIndex()
+    public function parterIndex(User $user, RepositoryRequest $request)
     {
-        $repositories = $this->user()->parterRepositories()->recent()
-            ->paginate(20);
+        $repositories = $user->parterRepositories()
+                            ->search($request->keyword, null, true)
+                            ->filter($request->all())
+                            ->paginate(20);
 
         return $this->response->paginator($repositories, new RepositoryTransformer());
     }

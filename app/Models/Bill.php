@@ -2,11 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
 class Bill extends Model
 {
+    protected $keepRevisionOf = ['deleted_at'];
+    protected $revisionCreationsEnabled = true;
+    protected $historyLimit = 5;
+    protected $revisionCleanup = true;
+
     protected $fillable = ['sort','num','good_id','inventory_id','user_id'];
+
+    protected $searchable = [
+        'columns' => [
+            'goods.name' => 10,
+        ],
+        'joins' => [
+            'goods' => ['goods.id','bills.good_id'],
+            'inventories' => ['inventories.id','bills.inventory_id'],
+        ],
+    ];
 
     public function good()
     {
@@ -50,7 +64,7 @@ class Bill extends Model
     {
         return $query->orderBy('updated_at', 'desc');
     }
-    public function scopeRecent($query)
+    public function scopeRecentCreated($query)
     {
         // 按照创建时间排序
         return $query->orderBy('created_at', 'desc');

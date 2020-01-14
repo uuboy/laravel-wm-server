@@ -76,10 +76,10 @@ $api->version('v1',[
             $api->get('repositories/{repository}','RepositoriesController@show')
                 ->name('api.repositories.show');
             //用户仓库列表
-            $api->get('repositories', 'RepositoriesController@userIndex')
+            $api->get('user/{user}/repositories', 'RepositoriesController@userIndex')
                 ->name('api.repositories.index');
             //用户协作仓库列表
-            $api->get('parter/repositories','RepositoriesController@parterIndex')
+            $api->get('user/{user}/parter/repositories','RepositoriesController@parterIndex')
                 ->name('api.parter.repositories.index');
 
 
