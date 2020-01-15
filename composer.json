@@ -33,6 +33,7 @@
         "spatie/laravel-backup": "^6.7",
         "spatie/laravel-permission": "~2.29",
         "summerblue/administrator": "~1.1",
+        "torann/geoip": "^1.1",
         "tucker-eric/eloquentfilter": "^2.2",
         "tymon/jwt-auth": "1.0.0-rc.4.1",
         "venturecraft/revisionable": "^1.33",
