@@ -52,9 +52,9 @@ class FactoriesController extends Controller
         {
             return $this->response->errorBadRequest();
         }
-        if ($factory->inventories->isNotEmpty()) {
-            return $this->response->errorMethodNotAllowed();
-        }
+        // if ($factory->inventories->isNotEmpty()) {
+        //     return $this->response->errorMethodNotAllowed();
+        // }
         $factory->delete();
         $factory->repository->user->notify(new FactoryDeleted($factory));
         return $this->response->noContent();

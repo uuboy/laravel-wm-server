@@ -61,9 +61,9 @@ class GoodsController extends Controller
         if ($good->repository_id != $repository->id) {
             return $this->response->errorBadRequest();
         }
-        if ($good->bills->isNotEmpty()) {
-            return $this->response->errorMethodNotAllowed();
-        }
+        // if ($good->bills->isNotEmpty()) {
+        //     return $this->response->errorMethodNotAllowed();
+        // }
         $good->delete();
 
         $good->repository->user->notify(new GoodDeleted($good));

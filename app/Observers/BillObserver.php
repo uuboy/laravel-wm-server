@@ -53,7 +53,8 @@ class BillObserver
      */
     public function restored(Bill $bill)
     {
-        //
+        $bill->inventory->bill_count = $bill->inventory->bills->count();
+        $bill->inventory->save();
     }
 
     /**

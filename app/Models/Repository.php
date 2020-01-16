@@ -1,10 +1,16 @@
 <?php
 
 namespace App\Models;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 
 class Repository extends Model
 {
+    use SoftDeletes, SoftCascadeTrait;
+
+    protected $softCascade = ['inventories','goods','factories','parters'];
+
     protected $keepRevisionOf = ['name','deleted_at'];
     protected $revisionCreationsEnabled = true;
     protected $historyLimit = 5;

@@ -19,6 +19,17 @@ class RepositoryObserver
 
     }
 
+    public function forceDeleted(Repository $repository)
+    {
+        $repository->user->repository_count = $repository->user->repositories->count();
+        $repository->user->save();
 
+    }
+     public function restored(Repository $repository)
+    {
+        $repository->user->repository_count = $repository->user->repositories->count();
+        $repository->user->save();
+
+    }
 
 }

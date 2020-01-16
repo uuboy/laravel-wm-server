@@ -18,12 +18,16 @@ class GoodObserver
         $good->repository->save();
    }
 
-   public function deleting(Good $good)
+   public function forceDeleted(Good $good)
    {
-        foreach ($good->bills as $bill) {
-            $bill->inventory->bill_count = $bill->inventory->bill_count - 1;
-            $bill->inventory->save();
-        }
+        $good->repository->good_count = $good->repository->goods->count();
+        $good->repository->save();
+   }
+
+   public function restored(Good $good)
+   {
+        $good->repository->good_count = $good->repository->goods->count();
+        $good->repository->save();
    }
 
 }

@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Models;
-
-
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 class Factory extends Model
 {
+    use SoftDeletes, SoftCascadeTrait;
+
+    protected $softCascade = ['inventories@restrict'];
 
     protected $keepRevisionOf = ['name','code','tel','bank','account','address','deleted_at'];
     protected $revisionCreationsEnabled = true;

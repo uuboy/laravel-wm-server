@@ -4,8 +4,57 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "381bea08a1b3aa62c3635f36a9363fd2",
+    "content-hash": "c153fb5c4876b10ae341c38326a80b19",
     "packages": [
+        {
+            "name": "askedio/laravel-soft-cascade",
+            "version": "5.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Askedio/laravel-soft-cascade.git",
+                "reference": "3ffb736d24d3c228734089624a4d821229b78644"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Askedio/laravel-soft-cascade/zipball/3ffb736d24d3c228734089624a4d821229b78644",
+                "reference": "3ffb736d24d3c228734089624a4d821229b78644",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "illuminate/container": "5.8.*",
+                "illuminate/database": "5.8.*",
+                "illuminate/events": "5.8.*",
+                "illuminate/support": "5.8.*",
+                "php": "^7.1.3"
+            },
+            "require-dev": {
+                "codacy/coverage": "dev-master",
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "~7.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Askedio\\SoftCascade\\Providers\\GenericServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Askedio\\SoftCascade\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Laravel Cascade Soft Delete & Restore",
+            "time": "2019-02-27T22:44:13+00:00"
+        },
         {
             "name": "bacon/bacon-qr-code",
             "version": "1.0.3",
@@ -124,6 +173,74 @@
                 "wkhtmltopdf"
             ],
             "time": "2019-10-02T23:27:09+00:00"
+        },
+        {
+            "name": "beyondcode/laravel-self-diagnosis",
+            "version": "1.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beyondcode/laravel-self-diagnosis.git",
+                "reference": "6792a2d8b29ab9080490dac145e310514dcf6224"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/beyondcode/laravel-self-diagnosis/zipball/6792a2d8b29ab9080490dac145e310514dcf6224",
+                "reference": "6792a2d8b29ab9080490dac145e310514dcf6224",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "composer/semver": "^1.4",
+                "geerlingguy/ping": "^1.1",
+                "illuminate/support": "5.2.*|5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*|^6.0",
+                "php": "^7.1",
+                "vlucas/phpdotenv": "~2.5|~3.3"
+            },
+            "require-dev": {
+                "larapack/dd": "^1.0",
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "~3.5|~3.8",
+                "phpunit/phpunit": "^7.0",
+                "predis/predis": "^1.1",
+                "scrutinizer/ocular": "^1.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "BeyondCode\\SelfDiagnosis\\SelfDiagnosisServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BeyondCode\\SelfDiagnosis\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcel Pociot",
+                    "email": "marcel@beyondco.de",
+                    "homepage": "https://beyondcode.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Perform various self diagnosis tests on your Laravel application.",
+            "homepage": "https://github.com/beyondcode/laravel-self-diagnosis",
+            "keywords": [
+                "beyondcode",
+                "laravel-self-diagnosis"
+            ],
+            "time": "2019-09-03T15:01:16+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -348,6 +465,73 @@
                 "wysiwyg"
             ],
             "time": "2019-09-26T11:04:37+00:00"
+        },
+        {
+            "name": "composer/semver",
+            "version": "1.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/semver.git",
+                "reference": "c6bea70230ef4dd483e6bbcab6005f682ed3a8de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/semver/zipball/c6bea70230ef4dd483e6bbcab6005f682ed3a8de",
+                "reference": "c6bea70230ef4dd483e6bbcab6005f682ed3a8de",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": "^5.3.2 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.5 || ^5.0.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\Semver\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nils Adermann",
+                    "email": "naderman@naderman.de",
+                    "homepage": "http://www.naderman.de"
+                },
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                },
+                {
+                    "name": "Rob Bast",
+                    "email": "rob.bast@gmail.com",
+                    "homepage": "http://robbast.nl"
+                }
+            ],
+            "description": "Semver library that offers utilities, version constraint parsing and validation.",
+            "keywords": [
+                "semantic",
+                "semver",
+                "validation",
+                "versioning"
+            ],
+            "time": "2020-01-13T12:06:48+00:00"
         },
         {
             "name": "dingo/api",
@@ -1297,6 +1481,45 @@
                 "trusted proxy"
             ],
             "time": "2019-09-03T16:45:42+00:00"
+        },
+        {
+            "name": "geerlingguy/ping",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/geerlingguy/Ping.git",
+                "reference": "e0206326e23c99e3e8820e24705f8ca517adff93"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/geerlingguy/Ping/zipball/e0206326e23c99e3e8820e24705f8ca517adff93",
+                "reference": "e0206326e23c99e3e8820e24705f8ca517adff93",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "JJG/Ping.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeff Geerling",
+                    "email": "jeff@jeffgeerling.com"
+                }
+            ],
+            "description": "A PHP class to ping hosts.",
+            "time": "2019-07-29T21:54:12+00:00"
         },
         {
             "name": "giggsey/libphonenumber-for-php",
@@ -2608,6 +2831,255 @@
             "time": "2018-12-28T07:37:23+00:00"
         },
         {
+            "name": "maatwebsite/excel",
+            "version": "3.1.18",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
+                "reference": "d0231ab1f4bb93c8695630cb445ada1fdc54add0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/d0231ab1f4bb93c8695630cb445ada1fdc54add0",
+                "reference": "d0231ab1f4bb93c8695630cb445ada1fdc54add0",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*|^6.0",
+                "php": "^7.0",
+                "phpoffice/phpspreadsheet": "^1.10"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.1",
+                "orchestra/database": "^4.0",
+                "orchestra/testbench": "^4.0",
+                "phpunit/phpunit": "^8.0",
+                "predis/predis": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Maatwebsite\\Excel\\ExcelServiceProvider"
+                    ],
+                    "aliases": {
+                        "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Maatwebsite\\Excel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Patrick Brouwers",
+                    "email": "patrick@maatwebsite.nl"
+                }
+            ],
+            "description": "Supercharged Excel exports and imports in Laravel",
+            "keywords": [
+                "PHPExcel",
+                "batch",
+                "csv",
+                "excel",
+                "export",
+                "import",
+                "laravel",
+                "php",
+                "phpspreadsheet"
+            ],
+            "time": "2019-12-24T10:40:12+00:00"
+        },
+        {
+            "name": "markbaker/complex",
+            "version": "1.4.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MarkBaker/PHPComplex.git",
+                "reference": "1ea674a8308baf547cbcbd30c5fcd6d301b7c000"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MarkBaker/PHPComplex/zipball/1ea674a8308baf547cbcbd30c5fcd6d301b7c000",
+                "reference": "1ea674a8308baf547cbcbd30c5fcd6d301b7c000",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": "^5.6.0|^7.0.0"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
+                "phpcompatibility/php-compatibility": "^8.0",
+                "phpdocumentor/phpdocumentor": "2.*",
+                "phploc/phploc": "2.*",
+                "phpmd/phpmd": "2.*",
+                "phpunit/phpunit": "^4.8.35|^5.4.0",
+                "sebastian/phpcpd": "2.*",
+                "squizlabs/php_codesniffer": "^3.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Complex\\": "classes/src/"
+                },
+                "files": [
+                    "classes/src/functions/abs.php",
+                    "classes/src/functions/acos.php",
+                    "classes/src/functions/acosh.php",
+                    "classes/src/functions/acot.php",
+                    "classes/src/functions/acoth.php",
+                    "classes/src/functions/acsc.php",
+                    "classes/src/functions/acsch.php",
+                    "classes/src/functions/argument.php",
+                    "classes/src/functions/asec.php",
+                    "classes/src/functions/asech.php",
+                    "classes/src/functions/asin.php",
+                    "classes/src/functions/asinh.php",
+                    "classes/src/functions/atan.php",
+                    "classes/src/functions/atanh.php",
+                    "classes/src/functions/conjugate.php",
+                    "classes/src/functions/cos.php",
+                    "classes/src/functions/cosh.php",
+                    "classes/src/functions/cot.php",
+                    "classes/src/functions/coth.php",
+                    "classes/src/functions/csc.php",
+                    "classes/src/functions/csch.php",
+                    "classes/src/functions/exp.php",
+                    "classes/src/functions/inverse.php",
+                    "classes/src/functions/ln.php",
+                    "classes/src/functions/log2.php",
+                    "classes/src/functions/log10.php",
+                    "classes/src/functions/negative.php",
+                    "classes/src/functions/pow.php",
+                    "classes/src/functions/rho.php",
+                    "classes/src/functions/sec.php",
+                    "classes/src/functions/sech.php",
+                    "classes/src/functions/sin.php",
+                    "classes/src/functions/sinh.php",
+                    "classes/src/functions/sqrt.php",
+                    "classes/src/functions/tan.php",
+                    "classes/src/functions/tanh.php",
+                    "classes/src/functions/theta.php",
+                    "classes/src/operations/add.php",
+                    "classes/src/operations/subtract.php",
+                    "classes/src/operations/multiply.php",
+                    "classes/src/operations/divideby.php",
+                    "classes/src/operations/divideinto.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Baker",
+                    "email": "mark@lange.demon.co.uk"
+                }
+            ],
+            "description": "PHP Class for working with complex numbers",
+            "homepage": "https://github.com/MarkBaker/PHPComplex",
+            "keywords": [
+                "complex",
+                "mathematics"
+            ],
+            "time": "2018-10-13T23:28:42+00:00"
+        },
+        {
+            "name": "markbaker/matrix",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MarkBaker/PHPMatrix.git",
+                "reference": "5348c5a67e3b75cd209d70103f916a93b1f1ed21"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MarkBaker/PHPMatrix/zipball/5348c5a67e3b75cd209d70103f916a93b1f1ed21",
+                "reference": "5348c5a67e3b75cd209d70103f916a93b1f1ed21",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": "^5.6.0|^7.0.0"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "dev-master",
+                "phpcompatibility/php-compatibility": "dev-master",
+                "phploc/phploc": "^4",
+                "phpmd/phpmd": "dev-master",
+                "phpunit/phpunit": "^5.7",
+                "sebastian/phpcpd": "^3.0",
+                "squizlabs/php_codesniffer": "^3.0@dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Matrix\\": "classes/src/"
+                },
+                "files": [
+                    "classes/src/functions/adjoint.php",
+                    "classes/src/functions/antidiagonal.php",
+                    "classes/src/functions/cofactors.php",
+                    "classes/src/functions/determinant.php",
+                    "classes/src/functions/diagonal.php",
+                    "classes/src/functions/identity.php",
+                    "classes/src/functions/inverse.php",
+                    "classes/src/functions/minors.php",
+                    "classes/src/functions/trace.php",
+                    "classes/src/functions/transpose.php",
+                    "classes/src/operations/add.php",
+                    "classes/src/operations/directsum.php",
+                    "classes/src/operations/subtract.php",
+                    "classes/src/operations/multiply.php",
+                    "classes/src/operations/divideby.php",
+                    "classes/src/operations/divideinto.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Baker",
+                    "email": "mark@lange.demon.co.uk"
+                }
+            ],
+            "description": "PHP Class for working with matrices",
+            "homepage": "https://github.com/MarkBaker/PHPMatrix",
+            "keywords": [
+                "mathematics",
+                "matrix",
+                "vector"
+            ],
+            "time": "2019-10-06T11:29:25+00:00"
+        },
+        {
             "name": "mews/captcha",
             "version": "2.3.0",
             "source": {
@@ -2679,6 +3151,72 @@
                 "laravel5 Security"
             ],
             "time": "2019-08-16T21:57:24+00:00"
+        },
+        {
+            "name": "milon/barcode",
+            "version": "6.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/milon/barcode.git",
+                "reference": "71454ba6d4ec3c70103379afb0376f51d0bf17ce"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/milon/barcode/zipball/71454ba6d4ec3c70103379afb0376f51d0bf17ce",
+                "reference": "71454ba6d4ec3c70103379afb0376f51d0bf17ce",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "illuminate/support": "5.*|~6",
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Milon\\Barcode\\BarcodeServiceProvider"
+                    ],
+                    "aliases": {
+                        "DNS1D": "Milon\\Barcode\\Facades\\DNS1DFacade",
+                        "DNS2D": "Milon\\Barcode\\Facades\\DNS2DFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Milon\\Barcode": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Nuruzzaman Milon",
+                    "email": "contact@milon.im"
+                }
+            ],
+            "description": "Barcode generator like Qr Code , PDF417,C39, C39+,C39E,C39E+,C93,S25,S25+,I25,I25+,C128,C128A,C128B,C128C,2-Digits UPC-Based Extention,5-Digits UPC-Based Extention,EAN 8,EAN 13,UPC-A,UPC-E,MSI (Variation of Plessey code) ",
+            "keywords": [
+                "CODABAR",
+                "CODE 128",
+                "CODE 39",
+                "barcode",
+                "datamatrix",
+                "ean",
+                "laravel",
+                "pdf417",
+                "qr code",
+                "qrcode"
+            ],
+            "time": "2019-09-17T07:40:26+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -3644,6 +4182,105 @@
             "time": "2019-08-22T18:11:29+00:00"
         },
         {
+            "name": "phpoffice/phpspreadsheet",
+            "version": "1.10.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
+                "reference": "1648dc9ebef6ebe0c5a172e16cf66732918416e0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/1648dc9ebef6ebe0c5a172e16cf66732918416e0",
+                "reference": "1648dc9ebef6ebe0c5a172e16cf66732918416e0",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-dom": "*",
+                "ext-fileinfo": "*",
+                "ext-gd": "*",
+                "ext-iconv": "*",
+                "ext-libxml": "*",
+                "ext-mbstring": "*",
+                "ext-simplexml": "*",
+                "ext-xml": "*",
+                "ext-xmlreader": "*",
+                "ext-xmlwriter": "*",
+                "ext-zip": "*",
+                "ext-zlib": "*",
+                "markbaker/complex": "^1.4",
+                "markbaker/matrix": "^1.2",
+                "php": "^7.1",
+                "psr/simple-cache": "^1.0"
+            },
+            "require-dev": {
+                "dompdf/dompdf": "^0.8.3",
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "jpgraph/jpgraph": "^4.0",
+                "mpdf/mpdf": "^8.0",
+                "phpcompatibility/php-compatibility": "^9.3",
+                "phpunit/phpunit": "^7.5",
+                "squizlabs/php_codesniffer": "^3.5",
+                "tecnickcom/tcpdf": "^6.3"
+            },
+            "suggest": {
+                "dompdf/dompdf": "Option for rendering PDF with PDF Writer",
+                "jpgraph/jpgraph": "Option for rendering charts, or including charts with PDF or HTML Writers",
+                "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
+                "tecnickcom/tcpdf": "Option for rendering PDF with PDF Writer"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpOffice\\PhpSpreadsheet\\": "src/PhpSpreadsheet"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "https://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Mark Baker",
+                    "homepage": "https://markbakeruk.net"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "https://rootslabs.net"
+                },
+                {
+                    "name": "Erik Tilt"
+                },
+                {
+                    "name": "Adrien Crivelli"
+                }
+            ],
+            "description": "PHPSpreadsheet - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "https://github.com/PHPOffice/PhpSpreadsheet",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "gnumeric",
+                "ods",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "time": "2019-12-01T23:13:51+00:00"
+        },
+        {
             "name": "phpoption/phpoption",
             "version": "1.5.0",
             "source": {
@@ -4483,6 +5120,69 @@
                 "lumen"
             ],
             "time": "2019-12-03T22:00:29+00:00"
+        },
+        {
+            "name": "renatomarinho/laravel-page-speed",
+            "version": "1.8.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/renatomarinho/laravel-page-speed.git",
+                "reference": "6381182828de2e0bdaa52ca132cfa2c34b8b728b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/renatomarinho/laravel-page-speed/zipball/6381182828de2e0bdaa52ca132cfa2c34b8b728b",
+                "reference": "6381182828de2e0bdaa52ca132cfa2c34b8b728b",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "illuminate/support": "5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0",
+                "php": "^5.6 || ^7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": ">=0.9.4",
+                "orchestra/testbench": "^3.2",
+                "phpunit/phpunit": "^5.7 || ^6.0 || ^7.0 || ^8.0",
+                "squizlabs/php_codesniffer": "^2.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "RenatoMarinho\\LaravelPageSpeed\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "RenatoMarinho\\LaravelPageSpeed\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Renato Marinho",
+                    "email": "renato.marinho@s2move.com"
+                }
+            ],
+            "description": "Laravel Page Speed",
+            "keywords": [
+                "html",
+                "laravel",
+                "minify",
+                "optmize",
+                "page speed"
+            ],
+            "time": "2019-09-03T23:58:45+00:00"
         },
         {
             "name": "simplesoftwareio/simple-qrcode",
@@ -7371,6 +8071,67 @@
             "time": "2019-08-11T13:17:40+00:00"
         },
         {
+            "name": "beyondcode/laravel-query-detector",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beyondcode/laravel-query-detector.git",
+                "reference": "12ca2c9864f8aef2cbe20287682cd3764b291eb0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/beyondcode/laravel-query-detector/zipball/12ca2c9864f8aef2cbe20287682cd3764b291eb0",
+                "reference": "12ca2c9864f8aef2cbe20287682cd3764b291eb0",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "illuminate/support": "^5.5|^6",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "3.6.*",
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "BeyondCode\\QueryDetector\\QueryDetectorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BeyondCode\\QueryDetector\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcel Pociot",
+                    "email": "marcel@beyondco.de",
+                    "homepage": "https://beyondcode.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel N+1 Query Detector",
+            "homepage": "https://github.com/beyondcode/laravel-query-detector",
+            "keywords": [
+                "beyondcode",
+                "laravel-query-detector"
+            ],
+            "time": "2019-09-18T19:07:08+00:00"
+        },
+        {
             "name": "doctrine/instantiator",
             "version": "1.2.0",
             "source": {
@@ -9164,6 +9925,124 @@
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
             "time": "2019-06-13T22:48:21+00:00"
+        },
+        {
+            "name": "xethron/laravel-4-generators",
+            "version": "3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Xethron/Laravel-4-Generators.git",
+                "reference": "526f0a07d8ae44e365a20b1bf64c9956acd2a859"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Xethron/Laravel-4-Generators/zipball/526f0a07d8ae44e365a20b1bf64c9956acd2a859",
+                "reference": "526f0a07d8ae44e365a20b1bf64c9956acd2a859",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "behat/behat": "~2.5.1",
+                "behat/mink": "~1.5.0",
+                "behat/mink-extension": "~1.2.0",
+                "behat/mink-goutte-driver": "~1.0.9",
+                "behat/mink-selenium2-driver": "~1.1.1",
+                "phpspec/phpspec": "~2.0",
+                "phpunit/phpunit": "~3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Way\\Generators": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeffrey Way",
+                    "email": "jeffrey@jeffrey-way.com"
+                }
+            ],
+            "description": "Rapidly generate resources, migrations, models, and much more.",
+            "time": "2017-02-23T11:20:49+00:00"
+        },
+        {
+            "name": "xethron/migrations-generator",
+            "version": "v2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Xethron/migrations-generator.git",
+                "reference": "a05bd7319ed808fcc3125212e37d30ccbe0d2b8b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Xethron/migrations-generator/zipball/a05bd7319ed808fcc3125212e37d30ccbe0d2b8b",
+                "reference": "a05bd7319ed808fcc3125212e37d30ccbe0d2b8b",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "doctrine/dbal": "~2.4",
+                "illuminate/support": ">=4.1",
+                "php": ">=5.4.0",
+                "xethron/laravel-4-generators": "~3.1.0"
+            },
+            "require-dev": {
+                "illuminate/cache": ">=4.1.0",
+                "illuminate/console": ">=4.1.0",
+                "mockery/mockery": ">=0.9.0",
+                "phpunit/phpunit": ">=4.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Way\\Generators\\GeneratorsServiceProvider",
+                        "Xethron\\MigrationsGenerator\\MigrationsGeneratorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Xethron\\MigrationsGenerator": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bernhard Breytenbach",
+                    "email": "bernhard@coffeecode.co.za"
+                }
+            ],
+            "description": "Generates Laravel Migrations from an existing database",
+            "keywords": [
+                "artisan",
+                "generator",
+                "laravel",
+                "migration",
+                "migrations"
+            ],
+            "time": "2017-09-19T17:31:57+00:00"
         }
     ],
     "aliases": [],

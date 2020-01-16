@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Models;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 
 class Bill extends Model
 {
+    use SoftDeletes, SoftCascadeTrait;
+
     protected $keepRevisionOf = ['deleted_at'];
     protected $revisionCreationsEnabled = true;
     protected $historyLimit = 5;

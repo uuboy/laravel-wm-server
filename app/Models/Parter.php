@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Models;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 
 class Parter extends Model
 {
+    use SoftDeletes, SoftCascadeTrait;
+
     protected $keepRevisionOf = ['user_id','repository_id'];
     protected $revisionCreationsEnabled = false;
     protected $historyLimit = 5;

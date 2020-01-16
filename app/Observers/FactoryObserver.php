@@ -19,11 +19,4 @@ class FactoryObserver
         //
     }
 
-    public function deleting(Factory $factory)
-    {
-        foreach ($factory->inventories as $inventory) {
-            $inventory->repository->inventory_count = $inventory->repository->inventory_count - 1;
-            $inventory->repository->save();
-        }
-    }
 }

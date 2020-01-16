@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 class Good extends Model
 {
+    use SoftDeletes, SoftCascadeTrait;
+
+    protected $softCascade = ['bills@restrict'];
 
     protected $keepRevisionOf = ['name','type','sort','factory','price','unit','deleted_at'];
     protected $revisionCreationsEnabled = true;

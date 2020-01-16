@@ -109,7 +109,7 @@ class BillsController extends Controller
         return $this->response->noContent();
     }
 
-    public function inventoryIndex(Repository $repository,Inventory $inventory)
+    public function inventoryIndex(Repository $repository, Inventory $inventory, BillRequest $request)
     {
         if($inventory->repository_id != $repository->id){
             return $this->response->errorBadRequest();
@@ -122,7 +122,7 @@ class BillsController extends Controller
         return $this->response->paginator($bills, new BillTransformer());
     }
 
-    public function goodIndex(Repository $repository,Good $good)
+    public function goodIndex(Repository $repository, Good $good, BillRequest $request)
     {
         if($good->repository_id != $repository->id){
             return $this->response->errorBadRequest();
