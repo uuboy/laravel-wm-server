@@ -23,3 +23,4 @@ Route::resource('bills', 'BillsController', ['only' => ['index', 'show', 'create
 Route::resource('factories', 'FactoriesController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
 Route::resource('parters', 'PartersController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+Route::get('decompose','\Lubusin\Decomposer\Controllers\DecomposerController@index');
