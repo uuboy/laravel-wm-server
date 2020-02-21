@@ -65,7 +65,7 @@ $api->version('v1',[
             $api->post('repositories', 'RepositoriesController@create')
                 ->name('api.repositories.create');
             //恢复软删除仓库
-            $apo->post('repositories/restore','RepositoriesController@restore')
+            $api->post('repositories/restore','RepositoriesController@restore')
                 ->name('api.repositories.restore');
             //修改仓库
             $api->put('repositories/{repository}', 'RepositoriesController@update')
