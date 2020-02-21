@@ -7,9 +7,9 @@ use App\Models\Repository;
 use Illuminate\Http\Request;
 use App\Transformers\GoodTransformer;
 use App\Http\Requests\Api\GoodRequest;
-use App\Notifications\GoodUpdated;
+use App\Notifications\GoodForceDeleted;
 use App\Notifications\GoodDeleted;
-use App\Notifications\GoodCreated;
+use App\Notifications\GoodRestored;
 
 class GoodsController extends Controller
 {
@@ -41,8 +41,6 @@ class GoodsController extends Controller
         $good->last_updater_id = $this->user()->id;
         $good->save();
 
-        $good->repository->user->notify(new GoodUpdated($good));
-
         return $this->response->item($good, new GoodTransformer());
     }
 
@@ -61,9 +59,7 @@ class GoodsController extends Controller
         if ($good->repository_id != $repository->id) {
             return $this->response->errorBadRequest();
         }
-        // if ($good->bills->isNotEmpty()) {
-        //     return $this->response->errorMethodNotAllowed();
-        // }
+
         $good->delete();
 
         $good->repository->user->notify(new GoodDeleted($good));
@@ -71,10 +67,45 @@ class GoodsController extends Controller
         return $this->response->noContent();
     }
 
+     public function forceDestroy(Repository $repository, Request $request)
+    {
+        $good = Good::onlyTrashed()
+            ->where('id', (int)$request['good_id'])
+            ->firstOrFail();
+        $good->forceDelete();
+
+        $good->repository->user->notify(new GoodForceDeleted($good));
+
+        return $this->response->noContent();
+    }
+
+     public function restore(Repository $repository,Request $request)
+    {
+        $good = Good::onlyTrashed()
+            ->where('id', (int)$request['good_id'])
+            ->firstOrFail();
+        $good->restore();
+
+        $good->repository->user->notify(new GoodRestored($good));
+
+        return $this->response->item($good,new GoodTransformer());
+    }
+
 
     public function repositoryIndex(Repository $repository, GoodRequest $request)
     {
         $goods = $repository->goods()
+                    ->search($request->keyword, null, true)
+                    ->filter($request->all())
+                    ->paginate(20);
+
+        return $this->response->paginator($goods, new GoodTransformer());
+    }
+
+    public function repositoryTrashedIndex(Repository $repository, GoodRequest $request)
+    {
+        $goods = $repository->goods()
+                    ->onlyTrashed()
                     ->search($request->keyword, null, true)
                     ->filter($request->all())
                     ->paginate(20);

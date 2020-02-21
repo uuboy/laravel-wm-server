@@ -39,10 +39,39 @@ class RepositoriesController extends Controller
         return $this->response->noContent();
     }
 
+    public function forceDestroy(Request $request)
+    {
+        $repository = Repository::onlyTrashed()
+            ->where('id', (int)$request['repository_id'])
+            ->firstOrFail();
+        $repository->forceDelete();
+
+        return $this->response->noContent();
+    }
+
+    public function restore(Request $request)
+    {
+        $repository = Repository::onlyTrashed()
+            ->where('id', (int)$request['repository_id'])
+            ->firstOrFail();
+        $repository->restore();
+        return $this->response->item($repository,new RepositoryTransformer());
+    }
     public function show(Repository $repository)
     {
         $this->authorize('show', $repository);
         return $this->response->item($repository,new RepositoryTransformer());
+    }
+
+    public function userTrashedIndex(User $user, RepositoryRequest $request)
+    {
+        $repositories = $user->repositories()
+                            ->onlyTrashed()
+                            ->search($request->keyword, null, true)
+                            ->filter($request->all())
+                            ->paginate(5);
+
+        return $this->response->paginator($repositories, new RepositoryTransformer());
     }
 
     public function userIndex(User $user, RepositoryRequest $request)

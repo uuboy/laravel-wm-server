@@ -14,6 +14,7 @@ use EloquentFilter\Filterable;
 use Venturecraft\Revisionable\RevisionableTrait;
 use Nicolaslopezj\Searchable\SearchableTrait;
 use Watson\Rememberable\Rememberable;
+use Overtrue\Pinyin\Pinyin;
 
 class User extends Authenticatable implements MustVerifyEmailContract, JWTSubject
 {
@@ -202,6 +203,16 @@ class User extends Authenticatable implements MustVerifyEmailContract, JWTSubjec
     {
         // 按照创建时间排序
         return $query->orderBy('created_at', 'desc');
+    }
+
+    public function getAvatarAttribute()
+    {
+        return $this->attributes['avatar'] ? $this->attributes['avatar'] : \Avatar::create($this->pinyin($this->name))->toBase64();
+    }
+
+    public function pinyin($text)
+    {
+        return \Str::slug(app(Pinyin::class)->permalink($text));
     }
 
 }

@@ -15,13 +15,23 @@ class InventoryObserver
     {
         $inventory->repository->inventory_count = $inventory->repository->inventories->count();
         $inventory->repository->save();
+        $bills = $inventory->bills()->get();
+        if($inventory->sort == 0){
+            foreach ($bills as $bill) {
+                $bill->good->num += $bill->num;
+                $bill->good->save();
+            }
+        }
 
-    }
+        if($inventory->sort == 1){
+            foreach ($bills as $bill) {
+                $bill->good->num -= $bill->num;
+                $bill->good->save();
+            }
+        }
 
-    public function forceDeleted(Inventory $inventory)
-    {
-        $inventory->repository->inventory_count = $inventory->repository->inventories->count();
-        $inventory->repository->save();
+        $inventory->bills()->delete();
+
 
     }
 
@@ -29,7 +39,29 @@ class InventoryObserver
     {
         $inventory->repository->inventory_count = $inventory->repository->inventories->count();
         $inventory->repository->save();
+        $inventory->bills()->restore();
+        $bills = $inventory->bills()->get();
+        if($inventory->sort == 1){
+            foreach ($bills as $bill) {
+                $bill->good->num += $bill->num;
+                $bill->good->save();
+            }
+        }
+        if($inventory->sort == 0){
+            foreach ($bills as $bill) {
+                $bill->good->num -= $bill->num;
+                $bill->good->save();
+            }
+        }
 
     }
+
+    public function forceDeleted(Inventory $inventory)
+    {
+        $inventory->repository->inventory_count = $inventory->repository->inventories->count();
+        $inventory->repository->save();
+        $inventory->bills()->withTrashed()->forceDelete();
+    }
+
 
 }

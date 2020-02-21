@@ -2,14 +2,11 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 
 class Inventory extends Model
 {
-    use SoftDeletes, SoftCascadeTrait;
-
-    protected $softCascade = ['bills'];
+    use SoftDeletes;
 
     protected $keepRevisionOf = ['name','deleted_at'];
     protected $revisionCreationsEnabled = true;

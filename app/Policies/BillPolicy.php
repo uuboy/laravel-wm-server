@@ -23,4 +23,9 @@ class BillPolicy extends Policy
         return $user->isAuthorOf($bill->good->repository) || ($user->isParterOf($bill->good->repository) && $user->isAuthorOf($bill));
     }
 
+    public function restore(User $user, Bill $bill)
+    {
+        return $user->isAuthorOf($bill->good->repository) || ($user->isParterOf($bill->good->repository) && $user->isAuthorOf($bill));
+    }
+
 }

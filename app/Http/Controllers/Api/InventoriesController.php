@@ -10,9 +10,9 @@ use Illuminate\Http\Request;
 use App\Transformers\InventoryTransformer;
 use App\Transformers\BillTransformer;
 use App\Http\Requests\Api\InventoryRequest;
-use App\Notifications\InventoryUpdated;
 use App\Notifications\InventoryDeleted;
-use App\Notifications\InventoryCreated;
+use App\Notifications\InventoryRestored;
+use App\Notifications\InventoryForceDeleted;
 
 class InventoriesController extends Controller
 {
@@ -33,8 +33,6 @@ class InventoriesController extends Controller
         $this->authorize('create', $inventory);
         $inventory->save();
 
-        $inventory->repository->user->notify(new InventoryCreated($inventory));
-
         return $this->response->item($inventory, new InventoryTransformer())
             ->setStatusCode(201);
     }
@@ -52,6 +50,30 @@ class InventoriesController extends Controller
         return $this->response->noContent();
     }
 
+    public function restore(Repository $repository,Request $request)
+    {
+        $inventory = Inventory::onlyTrashed()
+            ->where('id', (int)$request['inventory_id'])
+            ->firstOrFail();
+        $inventory->restore();
+
+        $inventory->repository->user->notify(new InventoryRestored($inventory));
+
+        return $this->response->item($inventory,new InventoryTransformer());
+    }
+
+    public function forceDestroy(Repository $repository,Request $request)
+    {
+        $inventory = Inventory::onlyTrashed()
+            ->where('id', (int)$request['inventory_id'])
+            ->firstOrFail();
+        $inventory->forceDelete();
+
+        $inventory->repository->user->notify(new InventoryForceDeleted($inventory));
+
+        return $this->response->noContent();
+    }
+
     public function update(Repository $repository,Inventory $inventory,InventoryRequest $request)
     {
         $this->authorize('update', $inventory);
@@ -64,7 +86,6 @@ class InventoriesController extends Controller
         $inventory->last_updater_id = $this->user()->id;
         $inventory->save();
 
-        $inventory->repository->user->notify(new InventoryUpdated($inventory));
 
         return $this->response->item($inventory,new InventoryTransformer());
     }
@@ -80,12 +101,23 @@ class InventoriesController extends Controller
 
     public function repositoryIndex(Repository $repository,InventoryRequest $request)
     {
-        $inventorys = $repository->inventories()
+        $inventories = $repository->inventories()
                         ->search($request->keyword, null, true)
                         ->filter($request->all())
                         ->paginate(20);
 
-        return $this->response->paginator($inventorys,new InventoryTransformer());
+        return $this->response->paginator($inventories,new InventoryTransformer());
+    }
+
+    public function repositoryTrashedIndex(Repository $repository,InventoryRequest $request)
+    {
+        $inventories = $repository->inventories()
+                        ->onlyTrashed()
+                        ->search($request->keyword, null, true)
+                        ->filter($request->all())
+                        ->paginate(20);
+
+        return $this->response->paginator($inventories,new InventoryTransformer());
     }
 
      public function ownerIndex(User $user,InventoryRequest $request)

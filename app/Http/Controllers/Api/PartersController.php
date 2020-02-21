@@ -34,6 +34,26 @@ class PartersController extends Controller
         return $this->response->noContent();
     }
 
+    public function forceDestroy(Repository $repository,Request $request)
+    {
+
+        $parter = Parter::onlyTrashed()
+            ->where('id', (int)$request['parter_id'])
+            ->firstOrFail();
+        $parter->forceDelete();
+        return $this->response->noContent();
+    }
+
+    public function restore(Repository $repository,Request $request)
+    {
+
+        $parter = Parter::onlyTrashed()
+            ->where('id', (int)$request['parter_id'])
+            ->firstOrFail();
+        $parter->restore();
+        return $this->response->item($parter, new ParterTransformer());
+    }
+
     public function repositoryIndex(Repository $repository, Request $request)
     {
         $parters = $repository->parters()
@@ -44,9 +64,31 @@ class PartersController extends Controller
         return $this->response->paginator($parters,new ParterTransformer());
     }
 
+    public function repositoryTrashedIndex(Repository $repository, Request $request)
+    {
+        $parters = $repository->parters()
+                    ->onlyTrashed()
+                    ->search($request->keyword, null, true)
+                    ->filter($request->all())
+                    ->paginate(20);
+
+        return $this->response->paginator($parters,new ParterTransformer());
+    }
+
     public function userIndex(User $user, Request $request)
     {
         $parters = $user->parters()
+                    ->search($request->keyword, null, true)
+                    ->filter($request->all())
+                    ->paginate(20);
+
+        return $this->response->paginator($parters,new ParterTransformer());
+    }
+
+    public function userTrashedIndex(User $user, Request $request)
+    {
+        $parters = $user->parters()
+                    ->onlyTrashed()
                     ->search($request->keyword, null, true)
                     ->filter($request->all())
                     ->paginate(20);

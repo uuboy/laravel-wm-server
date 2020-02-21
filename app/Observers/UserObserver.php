@@ -9,7 +9,7 @@ class UserObserver
     /**
      * Handle the user "created" event.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return void
      */
     public function created(User $user)
@@ -20,7 +20,7 @@ class UserObserver
     /**
      * Handle the user "updated" event.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return void
      */
     public function updated(User $user)
@@ -31,7 +31,7 @@ class UserObserver
     /**
      * Handle the user "deleted" event.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return void
      */
     public function deleted(User $user)
@@ -42,7 +42,7 @@ class UserObserver
     /**
      * Handle the user "restored" event.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return void
      */
     public function restored(User $user)
@@ -53,7 +53,7 @@ class UserObserver
     /**
      * Handle the user "force deleted" event.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return void
      */
     public function forceDeleted(User $user)
@@ -64,8 +64,8 @@ class UserObserver
     public function saving(User $user)
     {
         // 这样写扩展性更高，只有空的时候才指定默认头像
-        if (empty($user->avatar)) {
-            $user->avatar = config('app.url')."/img/default_avatar.png";
-        }
+        // if (empty($user->avatar)) {
+        //     $user->avatar = config('app.url')."/img/default_avatar.png";
+        // }
     }
 }

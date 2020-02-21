@@ -30,8 +30,6 @@ $api->version('v1',[
         //手机号注册
         $api->post('weapp/register','AuthorizationsController@weappStore')
             ->name('api.weapp.authorizations.store');
-        // $api->post('weapp/decrypt','AuthorizationsController@decrypt')
-        //     ->name('api.weapp.authorizations.decrypt');
         // 刷新token
         $api->put('authorizations/current', 'AuthorizationsController@update')
             ->name('api.authorizations.update');
@@ -66,10 +64,16 @@ $api->version('v1',[
             //创建仓库
             $api->post('repositories', 'RepositoriesController@create')
                 ->name('api.repositories.create');
+            //恢复软删除仓库
+            $apo->post('repositories/restore','RepositoriesController@restore')
+                ->name('api.repositories.restore');
             //修改仓库
             $api->put('repositories/{repository}', 'RepositoriesController@update')
                 ->name('api.repositories.update');
-            //删除仓库
+            //强制删除仓库
+            $api->delete('repositories/forceDestroy', 'RepositoriesController@forceDestroy')
+                ->name('api.repositories.forceDestroy');
+            //软删除仓库
             $api->delete('repositories/{repository}', 'RepositoriesController@destroy')
                 ->name('api.repositories.destroy');
             //获取仓库
@@ -77,39 +81,60 @@ $api->version('v1',[
                 ->name('api.repositories.show');
             //用户仓库列表
             $api->get('users/{user}/repositories', 'RepositoriesController@userIndex')
-                ->name('api.repositories.index');
+                ->name('api.repositories.userIndex');
+            //用户仓库软删除列表
+            $api->get('users/{user}/repositories/trashed', 'RepositoriesController@userTrashedIndex')
+                ->name('api.repositories.userTrashedIndex');
             //用户协作仓库列表
             $api->get('users/{user}/parter/repositories','RepositoriesController@parterIndex')
-                ->name('api.parter.repositories.index');
+                ->name('api.parter.repositories.parterIndex');
 
 
 
             //创建商品
             $api->post('repositories/{repository}/goods', 'GoodsController@store')
                 ->name('api.repositories.goods.store');
-            //删除商品
+            //恢复商品
+            $api->post('repositories/{repository}/goods/restore', 'GoodsController@restore')
+                ->name('api.repositories.goods.restore');
+            //强制删除商品
+            $api->delete('repositories/{repository}/goods/forceDestroy', 'GoodsController@forceDestroy')
+                ->name('api.repositories.goods.forceDestroy');
+            //软删除商品
             $api->delete('repositories/{repository}/goods/{good}', 'GoodsController@destroy')
                 ->name('api.repositories.goods.destroy');
             //修改商品
             $api->put('repositories/{repository}/goods/{good}', 'GoodsController@update')
                 ->name('api.repositories.goods.update');
+            //仓库商品列表
+            $api->get('repositories/{repository}/goods', 'GoodsController@repositoryIndex')
+                ->name('api.repositories.goods.repositoryIndex');
+            //仓库商品软删除列表
+            $api->get('repositories/{repository}/goods/trashed', 'GoodsController@repositoryTrashedIndex')
+                ->name('api.repositories.goods.repositoryTrashedIndex');
             //获取商品
             $api->get('repositories/{repository}/goods/{good}','GoodsController@show')
                 ->name('api.repositories.goods.show');
-            //仓库商品列表
-            $api->get('repositories/{repository}/goods', 'GoodsController@repositoryIndex')
-                ->name('api.repositories.goods.index');
 
 
             //创建清单
             $api->post('repositories/{repository}/inventories','InventoriesController@create')
                 ->name('api.repositories.inventories.create');
+            //强制删除清单
+            $api->delete('repositories/{repository}/inventories/forceDestroy','InventoriesController@forceDestroy')
+                ->name('api.repositories.inventories.forceDestroy');
             //删除清单
             $api->delete('repositories/{repository}/inventories/{inventory}','InventoriesController@destroy')
                 ->name('api.repositories.inventories.destroy');
+            //恢复清单
+            $api->post('repositories/{repository}/inventories/restore','InventoriesController@restore')
+                ->name('api.repositories.inventories.restore');
             //修改清单
             $api->put('repositories/{repository}/inventories/{inventory}','InventoriesController@update')
                 ->name('api.repositories.inventories.update');
+            //仓库清单软删除列表
+            $api->get('repositories/{repository}/inventories/trashed','InventoriesController@repositoryTrashedIndex')
+                ->name('api.repositories.inventories.bills.repositoryTrashedIndex');
             //获取清单
             $api->get('repositories/{repository}/inventories/{inventory}','InventoriesController@show')
                 ->name('api.repositories.inventories.show');
@@ -128,36 +153,55 @@ $api->version('v1',[
             //创建单据
             $api->post('repositories/{repository}/inventories/{inventory}/goods/{good}/bills', 'BillsController@store')
                 ->name('api.repositories.inventories.goods.bills.store');
+            //强制删除单据
+            $api->delete('repositories/{repository}/inventories/{inventory}/goods/{good}/bills/forceDestroy', 'BillsController@forceDestroy')
+                ->name('api.repositories.inventories.goods.bills.forceDestroy');
             //删除单据
             $api->delete('repositories/{repository}/inventories/{inventory}/goods/{good}/bills/{bill}', 'BillsController@destroy')
                 ->name('api.repositories.inventories.goods.bills.destroy');
+
+            //恢复单据
+            $api->post('repositories/{repository}/inventories/{inventory}/goods/{good}/bills/restore','BillsController@restore')
+                ->name('api.repositories.inventories.goods.bills.restore');
             //修改单据
             $api->put('repositories/{repository}/inventories/{inventory}/goods/{good}/bills/{bill}', 'BillsController@update')
                 ->name('api.repositories.inventories.goods.bills.update');
             //获取单据
             $api->get('repositories/{repository}/inventories/{inventory}/goods/{good}/bills/{bill}', 'BillsController@show')
                 ->name('api.repositories.inventories.goods.bills.show');
-            //商品订单列表
-            $api->get('repositories/{repository}/goods/{good}/bills', 'BillsController@goodIndex')
-                ->name('api.repositories.goods.bills.goodindex');
-             //清单单据列表
+            //清单单据列表
             $api->get('repositories/{repository}/inventories/{inventory}/bills','BillsController@inventoryIndex')
                 ->name('api.repositories.inventories.bills.inventoryIndex');
+            //清单单据软删除列表
+            $api->get('repositories/{repository}/inventories/{inventory}/bills/trashed','BillsController@inventoryTrashedIndex')
+                ->name('api.repositories.inventories.bills.inventoryTrashedIndex');
+            //商品单据列表
+            $api->get('repositories/{repository}/goods/{good}/bills', 'BillsController@goodIndex')
+                ->name('api.repositories.goods.bills.goodindex');
 
 
 
             //创建协作者
             $api->post('repositories/{repository}/parters','PartersController@create')
                 ->name('api.repositories.parters.create');
+            //强制删除协作者
+            $api->delete('repositories/{repository}/parters/forceDestroy','PartersController@forceDestroy')
+                ->name('api.repositories.parters.foreceDestroy');
             //删除协作者
             $api->delete('repositories/{repository}/parters/{parter}','PartersController@destroy')
                 ->name('api.repositories.parters.destroy');
             //仓库协作列表
             $api->get('repositories/{repository}/parters','PartersController@repositoryIndex')
-                ->name('api.repositories.parters.index');
+                ->name('api.repositories.parters.repositoryIndex');
+            //仓库协作软删除列表
+            $api->get('repositories/{repository}/parters/trashed','PartersController@repositoryTrashedIndex')
+                ->name('api.repositories.parters.repositoryTrashedIndex');
             //用户协作列表
             $api->get('users/{user}/parters','PartersController@userIndex')
-                ->name('api.users.parters.index');
+                ->name('api.users.parters.userIndex');
+            //用户协作软删除列表
+            $api->get('users/{user}/parters/trashed','PartersController@userTrashedIndex')
+                ->name('api.users.parters.userTrashedIndex');
 
             //用户通知列表
             $api->get('user/notifications','NotificationsController@index')
@@ -172,21 +216,31 @@ $api->version('v1',[
             $api->get('user/permissions', 'PermissionsController@index')
                 ->name('api.user.permissions.index');
 
+
+            //往来单位列表
+            $api->get('repositories/{repository}/factories','FactoriesController@index')
+                ->name('api.repositories.factories.index');
+            //往来单位软删除列表
+            $api->get('repositories/{repository}/factories/trashed','FactoriesController@trashedIndex')
+                ->name('api.repositories.factories.trashedIndex');
             //创建往来单位
             $api->post('repositories/{repository}/factories','FactoriesController@create')
                 ->name('api.repositories.factories.create');
+            //恢复往来单位
+            $api->post('repositories/{repository}/factories/restore','FactoriesController@restore')
+                ->name('api.repositories.factories.restore');
             //修改往来单位
             $api->put('repositories/{repository}/factories/{factory}','FactoriesController@update')
                 ->name('api.repositories.factories.update');
+            //强制删除往来单位
+            $api->delete('repositories/{repository}/factories/forceDestroy','FactoriesController@forceDestroy')
+                ->name('api.repositories.factories.destroy');
             //删除往来单位
             $api->delete('repositories/{repository}/factories/{factory}','FactoriesController@destroy')
                 ->name('api.repositories.factories.destroy');
             //获取往来单位
             $api->get('repositories/{repository}/factories/{factory}','FactoriesController@show')
                 ->name('api.repositories.factories.show');
-            //往来单位列表
-            $api->get('repositories/{repository}/factories','FactoriesController@index')
-                ->name('api.repositories.factories');
 
 
         });

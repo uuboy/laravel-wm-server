@@ -7,9 +7,8 @@ use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 class Repository extends Model
 {
-    use SoftDeletes, SoftCascadeTrait;
+    use SoftDeletes;
 
-    protected $softCascade = ['inventories','goods','factories','parters'];
 
     protected $keepRevisionOf = ['name','deleted_at'];
     protected $revisionCreationsEnabled = true;

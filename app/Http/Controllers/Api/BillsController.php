@@ -9,9 +9,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Transformers\BillTransformer;
 use App\Http\Requests\Api\BillRequest;
-use App\Notifications\BillUpdated;
 use App\Notifications\BillDeleted;
-use App\Notifications\BillCreated;
+use App\Notifications\BillForceDeleted;
+use App\Notifications\BillRestored;
 
 class BillsController extends Controller
 {
@@ -27,16 +27,7 @@ class BillsController extends Controller
         $bill->user_id = $this->user()->id;
         $bill->last_updater_id = $this->user()->id;
         $this->authorize('create', $bill);
-        if($bill->inventory->sort == 0){
-            $bill->good->num -= $bill->num;
-            $bill->save();
-            $bill->good->save();
-        }
-        if($bill->inventory->sort == 1) {
-            $bill->good->num += $bill->num;
-            $bill->save();
-            $bill->good->save();
-        }
+        $bill->save();
 
         $bill->inventory->repository->user->notify(new BillCreated($bill));
 
@@ -53,26 +44,10 @@ class BillsController extends Controller
         }
 
         $attributes = $request->only('num');
+        $attributes['last_updater_id'] = $this->user()->id;
 
-        if($bill->inventory->sort == 0){
-            $bill->good->num += $bill->num;
-            $bill->good->num -= $attributes['num'];
-            $bill->good->save();
-            $bill->update($attributes);
-            $bill->last_updater_id = $this->user()->id;
-            $bill->save();
-        }
-        if($bill->inventory->sort == 1){
-            $bill->good->num -= $bill->num;
-            $bill->good->num += $attributes['num'];
-            $bill->good->save();
-            $bill->update($attributes);
-            $bill->last_updater_id = $this->user()->id;
-            $bill->save();
-        }
+        $bill->update($attributes);
 
-
-        $bill->inventory->repository->user->notify(new BillUpdated($bill));
 
         return $this->response->item($bill, new BillTransformer());
     }
@@ -93,20 +68,42 @@ class BillsController extends Controller
         if ($inventory->repository_id != $repository->id || $good->repository_id !=$repository->id || $bill->good_id != $good->id) {
             return $this->response->errorBadRequest();
         }
-        if($bill->inventory->sort == 0){
-            $bill->good->num += $bill->num;
-            $bill->good->save();
-            $bill->delete();
-        }
-        if($bill->inventory->sort == 1) {
-            $bill->good->num -= $bill->num;
-            $bill->good->save();
-            $bill->delete();
-        }
+        $bill->delete();
 
         $bill->inventory->repository->user->notify(new BillDeleted($bill));
 
         return $this->response->noContent();
+    }
+
+    public function forceDestroy(Repository $repository,Inventory $inventory,Good $good, Request $request)
+    {
+        if ($inventory->repository_id != $repository->id || $good->repository_id !=$repository->id) {
+            return $this->response->errorBadRequest();
+        }
+        $bill = Bill::onlyTrashed()
+            ->where('id', (int)$request['bill_id'])
+            ->firstOrFail();
+        $bill->forceDelete();
+
+        $bill->inventory->repository->user->notify(new BillForceDeleted($bill));
+
+        return $this->response->noContent();
+    }
+
+     public function restore(Repository $repository,Inventory $inventory, Good $good, Request $request)
+    {
+        $this->authorize('destroy', $inventory);
+        if ($inventory->repository_id != $repository->id || $good->repository_id !=$repository->id) {
+            return $this->response->errorBadRequest();
+        }
+        $bill = Bill::onlyTrashed()
+            ->where('id', (int)$request['bill_id'])
+            ->firstOrFail();
+
+        $bill->restore();
+        $bill->inventory->repository->user->notify(new BillRestored($bill));
+
+        return $this->response->item($bill, new BillTransformer());
     }
 
     public function inventoryIndex(Repository $repository, Inventory $inventory, BillRequest $request)
@@ -115,6 +112,20 @@ class BillsController extends Controller
             return $this->response->errorBadRequest();
         }
         $bills = $inventory->bills()
+                    ->search($request->keyword, null, true)
+                    ->filter($request->all())
+                    ->paginate(20);
+
+        return $this->response->paginator($bills, new BillTransformer());
+    }
+
+    public function inventoryTrashedIndex(Repository $repository, Inventory $inventory, BillRequest $request)
+    {
+        if($inventory->repository_id != $repository->id){
+            return $this->response->errorBadRequest();
+        }
+        $bills = $inventory->bills()
+                    ->onlyTrashed()
                     ->search($request->keyword, null, true)
                     ->filter($request->all())
                     ->paginate(20);

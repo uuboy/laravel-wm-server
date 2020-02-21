@@ -2,19 +2,18 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 
 class Bill extends Model
 {
-    use SoftDeletes, SoftCascadeTrait;
+    use SoftDeletes;
 
     protected $keepRevisionOf = ['deleted_at'];
     protected $revisionCreationsEnabled = true;
     protected $historyLimit = 5;
     protected $revisionCleanup = true;
 
-    protected $fillable = ['sort','num','good_id','inventory_id','user_id'];
+    protected $fillable = ['sort','num','good_id','inventory_id','user_id','last_updater_id'];
 
     protected $searchable = [
         'columns' => [

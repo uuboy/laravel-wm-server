@@ -15,6 +15,7 @@ use App\Observers\InventoryObserver;
 use App\Observers\BillObserver;
 use App\Observers\FactoryObserver;
 use Illuminate\Support\ServiceProvider;
+use Studio\Totem\Totem;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,9 +31,11 @@ class AppServiceProvider extends ServiceProvider
         });
 
         \API::error(function (\Illuminate\Auth\Access\AuthorizationException $exception) {
-        abort(403, $exception->getMessage());
-    });
-
+                abort(403, $exception->getMessage());
+        });
+        Totem::auth(function($request) {
+            return true;
+        });
     }
 
     /**

@@ -35,11 +35,11 @@ class BillTransformer extends TransformerAbstract
 
     public function includeLastUpdater(Bill $bill)
     {
-        return $this->item($bill->lastUpdater, new UserTansfromer());
+        return $this->item($bill->lastUpdater, new UserTransformer());
     }
 
     public function includeUser(Bill $bill)
     {
-        return $this->item($bill->user, new UserTansfromer());
+        return $this->item($bill->user, new UserTransformer());
     }
 }
