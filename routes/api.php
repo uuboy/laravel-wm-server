@@ -184,6 +184,9 @@ $api->version('v1',[
             //创建协作者
             $api->post('repositories/{repository}/parters','PartersController@create')
                 ->name('api.repositories.parters.create');
+            //恢复协作者
+            $api->post('repositories/{repository}/parters/restore','PartersController@restore')
+                ->name('api.repositories.parters.restore');
             //强制删除协作者
             $api->delete('repositories/{repository}/parters/forceDestroy','PartersController@forceDestroy')
                 ->name('api.repositories.parters.foreceDestroy');
