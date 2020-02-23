@@ -24,8 +24,6 @@ class GoodsController extends Controller
         $this->authorize('create', $good);
         $good->save();
 
-        $good->repository->user->notify(new GoodCreated($good));
-
         return $this->response->item($good, new GoodTransformer())
             ->setStatusCode(201);
     }

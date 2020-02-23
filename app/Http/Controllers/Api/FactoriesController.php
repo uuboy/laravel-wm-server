@@ -22,7 +22,6 @@ class FactoriesController extends Controller
         $factory->last_updater_id = $this->user()->id;
         $this->authorize('create', $factory);
         $factory->save();
-        $factory->repository->user->notify(new FactoryCreated($factory));
 
         return $this->response->item($factory, new FactoryTransformer())
             ->setStatusCode(201);

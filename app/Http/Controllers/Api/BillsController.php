@@ -29,8 +29,6 @@ class BillsController extends Controller
         $this->authorize('create', $bill);
         $bill->save();
 
-        $bill->inventory->repository->user->notify(new BillCreated($bill));
-
         return $this->response->item($bill, new BillTransformer())
             ->setStatusCode(201);
     }
@@ -131,6 +129,24 @@ class BillsController extends Controller
                     ->paginate(20);
 
         return $this->response->paginator($bills, new BillTransformer());
+    }
+
+    public function inventoryTrashedIndexForceDestroy(Repository $repository, Inventory $inventory, BillRequest $request)
+    {
+        if($inventory->repository_id != $repository->id){
+            return $this->response->errorBadRequest();
+        }
+        $bills = $inventory->bills()
+                    ->onlyTrashed()
+                    ->search($request->keyword, null, true)
+                    ->filter($request->all())
+                    ->paginate(20);
+
+        foreach ($bills as $bill) {
+            $bill->forceDelete();
+            $bill->inventory->repository->user->notify(new BillForceDeleted($bill));
+        }
+        return $this->response->noContent();
     }
 
     public function goodIndex(Repository $repository, Good $good, BillRequest $request)

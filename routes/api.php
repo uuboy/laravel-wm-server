@@ -175,6 +175,9 @@ $api->version('v1',[
             //清单单据软删除列表
             $api->get('repositories/{repository}/inventories/{inventory}/bills/trashed','BillsController@inventoryTrashedIndex')
                 ->name('api.repositories.inventories.bills.inventoryTrashedIndex');
+            //清单单据软删除强制删除列表
+            $api->delete('repositories/{repository}/inventories/{inventory}/bills/trashed/forceDestroy','BillsController@inventoryTrashedIndexForceDestroy')
+                ->name('api.repositories.inventories.bills.inventoryTrashedIndexForceDestroy');
             //商品单据列表
             $api->get('repositories/{repository}/goods/{good}/bills', 'BillsController@goodIndex')
                 ->name('api.repositories.goods.bills.goodindex');

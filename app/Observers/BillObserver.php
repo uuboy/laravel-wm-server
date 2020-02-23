@@ -89,8 +89,7 @@ class BillObserver
      */
     public function restored(Bill $bill)
     {
-        $bill->inventory->bill_count = $bill->inventory->bills->count();
-        $bill->inventory->save();
+
         if($bill->inventory->sort == 1){
             $bill->good->num += $bill->num;
             $bill->good->save();
@@ -99,6 +98,8 @@ class BillObserver
             $bill->good->num -= $bill->num;
             $bill->good->save();
         }
+        $bill->inventory->bill_count = $bill->inventory->bills->count();
+        $bill->inventory->save();
     }
 
     /**

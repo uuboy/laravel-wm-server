@@ -37,8 +37,6 @@ class InventoryObserver
 
     public function restored(Inventory $inventory)
     {
-        $inventory->repository->inventory_count = $inventory->repository->inventories->count();
-        $inventory->repository->save();
         $inventory->bills()->restore();
         $bills = $inventory->bills()->get();
         if($inventory->sort == 1){
@@ -53,6 +51,8 @@ class InventoryObserver
                 $bill->good->save();
             }
         }
+        $inventory->bill_count = $inventory->bills->count();
+        $inventory->save();
 
     }
 
