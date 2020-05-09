@@ -140,7 +140,7 @@ class BillsController extends Controller
                     ->onlyTrashed()
                     ->search($request->keyword, null, true)
                     ->filter($request->all())
-                    ->paginate(20);
+                    ->get();
 
         foreach ($bills as $bill) {
             $bill->forceDelete();

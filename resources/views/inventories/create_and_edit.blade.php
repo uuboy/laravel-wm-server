@@ -29,27 +29,27 @@
 
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-          
+
                 <div class="form-group">
                     <label for="repository_id-field">Repository_id</label>
                     <input class="form-control" type="text" name="repository_id" id="repository_id-field" value="{{ old('repository_id', $inventory->repository_id ) }}" />
-                </div> 
+                </div>
                 <div class="form-group">
                 	<label for="name-field">Name</label>
                 	<input class="form-control" type="text" name="name" id="name-field" value="{{ old('name', $inventory->name ) }}" />
-                </div> 
+                </div>
                 <div class="form-group">
                     <label for="sort-field">Sort</label>
                     <input class="form-control" type="text" name="sort" id="sort-field" value="{{ old('sort', $inventory->sort ) }}" />
-                </div> 
+                </div>
                 <div class="form-group">
                     <label for="receiver_id-field">Receiver_id</label>
                     <input class="form-control" type="text" name="receiver_id" id="receiver_id-field" value="{{ old('receiver_id', $inventory->receiver_id ) }}" />
-                </div> 
+                </div>
                 <div class="form-group">
                     <label for="owner_id-field">Owner_id</label>
                     <input class="form-control" type="text" name="owner_id" id="owner_id-field" value="{{ old('owner_id', $inventory->owner_id ) }}" />
-                </div> 
+                </div>
                 <div class="form-group">
                     <label for="bill_count-field">Bill_count</label>
                     <input class="form-control" type="text" name="bill_count" id="bill_count-field" value="{{ old('bill_count', $inventory->bill_count ) }}" />

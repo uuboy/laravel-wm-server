@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 use App\Models\Repository;
+
 class RepositoryObserver
 {
     public function created(Repository $repository)

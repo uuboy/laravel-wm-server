@@ -61,23 +61,27 @@ class BillObserver
     }
 
     /**
-     * Handle the bill "deleted" event.
+     * Handle the bill "deleting" event.
      *
      * @param  \App\Models\Bill  $bill
      * @return void
      */
-    public function deleted(Bill $bill)
+    public function deleting(Bill $bill)
     {
         $bill->inventory->bill_count = $bill->inventory->bills->count();
         $bill->inventory->save();
-        if($bill->inventory->sort == 0){
-            $bill->good->num += $bill->num;
-            $bill->good->save();
+        if(!$bill->trashed())
+        {
+           if($bill->inventory->sort == 0){
+                $bill->good->num += $bill->num;
+                $bill->good->save();
+            }
+            if($bill->inventory->sort == 1) {
+                $bill->good->num -= $bill->num;
+                $bill->good->save();
+            }
         }
-        if($bill->inventory->sort == 1) {
-            $bill->good->num -= $bill->num;
-            $bill->good->save();
-        }
+
 
     }
 
@@ -110,13 +114,6 @@ class BillObserver
      */
     public function forceDeleted(Bill $bill)
     {
-        if($bill->inventory->sort == 1){
-            $bill->good->num += $bill->num;
-            $bill->good->save();
-        }
-        if($bill->inventory->sort == 0) {
-            $bill->good->num -= $bill->num;
-            $bill->good->save();
-        }
+
     }
 }
